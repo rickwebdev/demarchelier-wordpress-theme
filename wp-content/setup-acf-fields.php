@@ -74,11 +74,14 @@ $field_group = array(
             'default_value' => 'Since 1978 we have served classic French <span class="accent-script">bistro</span> fare with a warm, family atmosphere. Our menu pairs traditional dishes with a predominantly French wine list. Join us for a quick bite at the bar or a relaxed dinner with friends.',
         ),
         array(
-            'key' => 'field_about_image',
-            'label' => 'About Image',
-            'name' => 'about_image',
-            'type' => 'image',
+            'key' => 'field_about_images',
+            'label' => 'About Images',
+            'name' => 'about_images',
+            'type' => 'gallery',
             'return_format' => 'array',
+            'min' => 1,
+            'max' => 3,
+            'required' => 1,
         ),
         
         // Menu Section
@@ -162,6 +165,18 @@ $field_group = array(
             ),
         ),
         
+        // Gallery Section
+        array(
+            'key' => 'field_gallery_images',
+            'label' => 'Gallery Images',
+            'name' => 'gallery_images',
+            'type' => 'gallery',
+            'return_format' => 'array',
+            'min' => 1,
+            'max' => 4,
+            'required' => 1,
+        ),
+        
         // Social Links
         array(
             'key' => 'field_social_links',
@@ -232,12 +247,12 @@ $default_menu_items = array(
 // Set default hours
 $default_hours = array(
     array('day' => 'Mon', 'hours_text' => 'Closed'),
-    array('day' => 'Tue', 'hours_text' => 'Closed'),
-    array('day' => 'Wed', 'hours_text' => '12 pm – 9 pm'),
-    array('day' => 'Thu', 'hours_text' => '12 pm – 9 pm'),
-    array('day' => 'Fri', 'hours_text' => '12 pm – 9:30 pm'),
-    array('day' => 'Sat', 'hours_text' => '12 pm – 9:30 pm'),
-    array('day' => 'Sun', 'hours_text' => '12 pm – 8:30 pm'),
+    array('day' => 'Tue', 'hours_text' => '12:00 PM - 9:00 PM'),
+    array('day' => 'Wed', 'hours_text' => '12:00 PM - 9:00 PM'),
+    array('day' => 'Thu', 'hours_text' => '12:00 PM - 9:00 PM'),
+    array('day' => 'Fri', 'hours_text' => '12:00 PM - 9:30 PM'),
+    array('day' => 'Sat', 'hours_text' => '12:00 PM - 9:30 PM'),
+    array('day' => 'Sun', 'hours_text' => '12:00 PM - 8:30 PM'),
 );
 
 // Update options

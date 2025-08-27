@@ -75,7 +75,8 @@ You can also edit content directly in the database using WP-CLI:
 | `resy_link` | URL | Reservation booking link |
 | `announcement_text` | Text | Header announcement |
 | `about_content` | WYSIWYG | Restaurant story |
-| `about_image` | Image | About section photo |
+| `about_images` | Gallery | About section photos (1-3) |
+| `gallery_images` | Gallery | Gallery section photos (1-4) |
 | `menu_items` | Repeater | List of menu items |
 | `menu_pdf` | File | Full menu PDF |
 | `contact_info` | Group | Address, phone, email |

@@ -26,7 +26,39 @@ if (empty($hero_images)) {
 }
 $resy_link = get_theme_mod('resy_link', 'https://resy.com/cities/greenport-ny/venues/demarchelier-bistro');
 $about_content = get_theme_mod('about_content', 'Since 1978 we have served classic French <span class="accent-script">bistro</span> fare with a warm, family atmosphere. Our menu pairs traditional dishes with a predominantly French wine list. Join us for a quick bite at the bar or a relaxed dinner with friends.');
-$about_image = get_theme_mod('about_image') ? array('url' => get_theme_mod('about_image')) : get_field('about_image', 'option');
+
+// Get about images from Customizer
+$about_images = array();
+$about_image_1 = get_theme_mod('about_image_1');
+$about_image_2 = get_theme_mod('about_image_2');
+$about_image_3 = get_theme_mod('about_image_3');
+
+if ($about_image_1) $about_images[] = array('url' => $about_image_1);
+if ($about_image_2) $about_images[] = array('url' => $about_image_2);
+if ($about_image_3) $about_images[] = array('url' => $about_image_3);
+
+// Fallback to ACF if no Customizer images
+if (empty($about_images)) {
+    $about_images = get_field('about_images', 'option');
+}
+
+// Get gallery images from Customizer
+$gallery_images = array();
+$gallery_image_1 = get_theme_mod('gallery_image_1');
+$gallery_image_2 = get_theme_mod('gallery_image_2');
+$gallery_image_3 = get_theme_mod('gallery_image_3');
+$gallery_image_4 = get_theme_mod('gallery_image_4');
+
+if ($gallery_image_1) $gallery_images[] = array('url' => $gallery_image_1);
+if ($gallery_image_2) $gallery_images[] = array('url' => $gallery_image_2);
+if ($gallery_image_3) $gallery_images[] = array('url' => $gallery_image_3);
+if ($gallery_image_4) $gallery_images[] = array('url' => $gallery_image_4);
+
+// Fallback to ACF if no Customizer images
+if (empty($gallery_images)) {
+    $gallery_images = get_field('gallery_images', 'option');
+}
+
 $menu_items = get_option('menu_items') ?: get_field('menu_items', 'option');
 $menu_pdf = get_theme_mod('menu_pdf_file') ? array('url' => get_theme_mod('menu_pdf_file')) : get_field('menu_pdf', 'option');
 
@@ -72,13 +104,26 @@ $contact_info = array(
 
 <!-- About Section -->
 <section id="about" class="about container">
-    <?php if ($about_image): ?>
-        <img class="fade-in-left" src="<?php echo esc_url($about_image['url']); ?>" 
-             alt="<?php echo esc_attr($about_image['alt']); ?>">
-    <?php else: ?>
-        <img class="fade-in-left" src="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?q=80&w=1600&auto=format&fit=crop"
-             alt="Candlelit bistro tables with framed artwork on the walls">
-    <?php endif; ?>
+    <div class="about-carousel fade-in-left">
+        <?php if ($about_images && is_array($about_images)): ?>
+            <?php foreach ($about_images as $index => $image): ?>
+                <div class="about-carousel-image <?php echo $index === 0 ? 'active' : ''; ?>" 
+                     style="background-image: url('<?php echo esc_url($image['url']); ?>');"
+                     data-alt="<?php echo esc_attr($image['alt']); ?>">
+                </div>
+            <?php endforeach; ?>
+            <div class="about-carousel-indicators">
+                <?php foreach ($about_images as $index => $image): ?>
+                    <div class="about-carousel-indicator <?php echo $index === 0 ? 'active' : ''; ?>" data-index="<?php echo $index; ?>"></div>
+                <?php endforeach; ?>
+            </div>
+        <?php else: ?>
+            <div class="about-carousel-image active" 
+                 style="background-image: url('https://images.unsplash.com/photo-1519710164239-da123dc03ef4?q=80&w=1600&auto=format&fit=crop');"
+                 data-alt="Candlelit bistro tables with framed artwork on the walls">
+            </div>
+        <?php endif; ?>
+    </div>
     <div class="fade-in-right">
         <h2 class="outlined-heading"><?php _e('About', 'demarchelier'); ?></h2>
         <?php if ($about_content): ?>
@@ -191,14 +236,22 @@ $contact_info = array(
                 <a class="btn" href="https://www.ericdemarchelier.com/shop-art" target="_blank" rel="noopener"><?php _e('Visit Gallery Site', 'demarchelier'); ?></a>
             </div>
             <div class="gallery-images fade-in-right">
-                <img src="https://images.unsplash.com/photo-1549880338-65ddcdfd017b?q=80&w=1200&auto=format&fit=crop"
-                     alt="<?php _e('Warmly lit bistro interior with framed art', 'demarchelier'); ?>">
-                <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?q=80&w=1200&auto=format&fit=crop"
-                     alt="<?php _e('Elegant artwork on restaurant walls', 'demarchelier'); ?>">
-                <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?q=80&w=1200&auto=format&fit=crop"
-                     alt="<?php _e('Family art collection display', 'demarchelier'); ?>">
-                <img src="https://images.unsplash.com/photo-1549880338-65ddcdfd017b?q=80&w=1200&auto=format&fit=crop"
-                     alt="<?php _e('Art gallery atmosphere', 'demarchelier'); ?>">
+                <?php if ($gallery_images && is_array($gallery_images)): ?>
+                    <?php foreach ($gallery_images as $image): ?>
+                        <img src="<?php echo esc_url($image['url']); ?>"
+                             alt="<?php echo esc_attr($image['alt']); ?>">
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <!-- Default gallery images -->
+                    <img src="https://images.unsplash.com/photo-1549880338-65ddcdfd017b?q=80&w=1200&auto=format&fit=crop"
+                         alt="<?php _e('Warmly lit bistro interior with framed art', 'demarchelier'); ?>">
+                    <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?q=80&w=1200&auto=format&fit=crop"
+                         alt="<?php _e('Elegant artwork on restaurant walls', 'demarchelier'); ?>">
+                    <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?q=80&w=1200&auto=format&fit=crop"
+                         alt="<?php _e('Family art collection display', 'demarchelier'); ?>">
+                    <img src="https://images.unsplash.com/photo-1549880338-65ddcdfd017b?q=80&w=1200&auto=format&fit=crop"
+                         alt="<?php _e('Art gallery atmosphere', 'demarchelier'); ?>">
+                <?php endif; ?>
             </div>
         </div>
     </div>

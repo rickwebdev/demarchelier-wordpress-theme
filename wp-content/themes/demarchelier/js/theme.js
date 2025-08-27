@@ -16,6 +16,7 @@
     $(document).ready(function() {
         initMobileNav();
         initHero();
+        initAboutCarousel();
         initScrollAnimations();
         initPreloader();
         initContactForm();
@@ -74,26 +75,45 @@
      * Scroll Animations
      */
     function initScrollAnimations() {
-        function checkScrollAnimations() {
-            const elements = $('.fade-in-up, .fade-in-left, .fade-in-right');
-            
-            elements.each(function() {
-                const element = $(this);
-                const elementTop = element.offset().top;
-                const elementVisible = 150;
-                
-                if (elementTop < $(window).scrollTop() + $(window).height() - elementVisible) {
-                    element.addClass('visible');
-                }
-            });
+        let animationElements = [];
+        let windowHeight = $(window).height();
+        
+        function initAnimationElements() {
+            animationElements = $('.fade-in-up, .fade-in-left, .fade-in-right').map(function() {
+                return {
+                    element: $(this),
+                    top: $(this).offset().top,
+                    visible: 150
+                };
+            }).get();
         }
         
-        // Check animations on scroll and load
-        $(window).on('scroll', checkScrollAnimations);
-        $(window).on('load', checkScrollAnimations);
+        window.checkScrollAnimations = function() {
+            const scrollTop = $(window).scrollTop();
+            const triggerPoint = scrollTop + windowHeight - 150;
+            
+            animationElements.forEach(function(item) {
+                if (item.top < triggerPoint && !item.element.hasClass('visible')) {
+                    item.element.addClass('visible');
+                }
+            });
+        };
+        
+        // Initialize elements on load
+        $(window).on('load', function() {
+            initAnimationElements();
+            window.checkScrollAnimations();
+        });
+        
+        // Recalculate on resize
+        $(window).on('resize', debounce(function() {
+            windowHeight = $(window).height();
+            initAnimationElements();
+        }, 250));
         
         // Initial check
-        checkScrollAnimations();
+        initAnimationElements();
+        window.checkScrollAnimations();
     }
 
     /**
@@ -137,6 +157,8 @@
         const heroBgs = $('.hero-bg');
         const heroContent = $('.hero .inner');
         let currentBg = 0;
+        let heroHeight = $('.hero').outerHeight();
+        let ticking = false;
         
         function nextBg() {
             heroBgs.eq(currentBg).removeClass('active');
@@ -145,32 +167,86 @@
         }
         
         // Parallax effect on scroll
-        function updateParallax() {
-            const scrolled = window.pageYOffset;
-            const heroHeight = $('.hero').outerHeight();
-            const maxScroll = heroHeight * 0.8; // Limit parallax to 80% of hero height
-            
-            if (scrolled <= maxScroll) {
-                const rate = scrolled * -0.3; // Reduced movement rate
-                const contentRate = scrolled * 0.2;
-                
-                // Move background images slower (creates parallax effect)
-                heroBgs.each(function() {
-                    $(this).css('transform', `translateZ(-100px) scale(1.2) translateY(${rate}px)`);
+        window.updateParallax = function() {
+            if (!ticking) {
+                requestAnimationFrame(function() {
+                    const scrolled = window.pageYOffset;
+                    const maxScroll = heroHeight * 0.8; // Limit parallax to 80% of hero height
+                    
+                    if (scrolled <= maxScroll) {
+                        const rate = scrolled * -0.3; // Reduced movement rate
+                        const contentRate = scrolled * 0.2;
+                        
+                        // Move background images slower (creates parallax effect)
+                        heroBgs.each(function() {
+                            $(this).css('transform', `translateZ(-100px) scale(1.2) translateY(${rate}px)`);
+                        });
+                        
+                        // Move content slightly faster
+                        if (heroContent.length) {
+                            heroContent.css('transform', `translateZ(50px) translateY(${contentRate}px)`);
+                        }
+                    }
+                    ticking = false;
                 });
-                
-                // Move content slightly faster
-                if (heroContent.length) {
-                    heroContent.css('transform', `translateZ(50px) translateY(${contentRate}px)`);
-                }
+                ticking = true;
             }
-        }
+        };
         
         // Change image every 5 seconds
         setInterval(nextBg, 5000);
         
-        // Add scroll listener for parallax
-        $(window).on('scroll', updateParallax);
+        // Update hero height on resize
+        $(window).on('resize', debounce(function() {
+            heroHeight = $('.hero').outerHeight();
+        }, 250));
+    }
+
+    /**
+     * About Carousel
+     */
+    function initAboutCarousel() {
+        const aboutImages = $('.about-carousel-image');
+        const indicators = $('.about-carousel-indicator');
+        
+        if (aboutImages.length <= 1) {
+            return; // No carousel needed if only one image
+        }
+        
+        let currentImage = 0;
+        let autoPlayInterval;
+        
+        function showImage(index) {
+            aboutImages.removeClass('active');
+            indicators.removeClass('active');
+            aboutImages.eq(index).addClass('active');
+            indicators.eq(index).addClass('active');
+            currentImage = index;
+        }
+        
+        function nextImage() {
+            const nextIndex = (currentImage + 1) % aboutImages.length;
+            showImage(nextIndex);
+        }
+        
+        // Handle indicator clicks
+        indicators.on('click', function() {
+            const index = $(this).data('index');
+            showImage(index);
+            
+            // Reset autoplay timer
+            clearInterval(autoPlayInterval);
+            autoPlayInterval = setInterval(nextImage, 4000);
+        });
+        
+        // Pause autoplay on hover
+        $('.about-carousel').hover(
+            function() { clearInterval(autoPlayInterval); },
+            function() { autoPlayInterval = setInterval(nextImage, 4000); }
+        );
+        
+        // Start autoplay
+        autoPlayInterval = setInterval(nextImage, 4000);
     }
 
     /**
@@ -322,13 +398,21 @@
         };
     }
 
-    // Apply debouncing to scroll events
-    const debouncedScroll = debounce(function() {
-        checkScrollAnimations();
-        updateParallax();
-    }, 10);
-
-    $(window).on('scroll', debouncedScroll);
+    // Apply throttling to scroll events with requestAnimationFrame
+    let scrollTicking = false;
+    
+    function handleScroll() {
+        if (!scrollTicking) {
+            requestAnimationFrame(function() {
+                if (window.checkScrollAnimations) window.checkScrollAnimations();
+                if (window.updateParallax) window.updateParallax();
+                scrollTicking = false;
+            });
+            scrollTicking = true;
+        }
+    }
+    
+    $(window).on('scroll', handleScroll);
 
     /**
      * SEO and Analytics

@@ -11,6 +11,38 @@ if (!defined('ABSPATH')) {
 }
 
 /**
+ * Increase upload limits for large images
+ */
+function demarchelier_increase_upload_limits() {
+    // Increase PHP upload limits
+    @ini_set('upload_max_filesize', '64M');
+    @ini_set('post_max_size', '64M');
+    @ini_set('max_execution_time', '300');
+    @ini_set('max_input_time', '300');
+    @ini_set('memory_limit', '256M');
+    
+    // WordPress specific settings
+    if (!defined('WP_MEMORY_LIMIT')) {
+        define('WP_MEMORY_LIMIT', '256M');
+    }
+    
+    // Allow larger image uploads
+    add_filter('big_image_size_threshold', '__return_false');
+    
+    // Increase image quality
+    add_filter('jpeg_quality', function($quality) {
+        return 95;
+    });
+    
+    // Allow SVG uploads (optional)
+    add_filter('upload_mimes', function($mimes) {
+        $mimes['svg'] = 'image/svg+xml';
+        return $mimes;
+    });
+}
+add_action('init', 'demarchelier_increase_upload_limits');
+
+/**
  * Theme Setup
  */
 function demarchelier_setup() {
@@ -350,15 +382,26 @@ function demarchelier_render_hero_block($attributes) {
 
 function demarchelier_render_about_block($attributes) {
     $about_content = get_field('about_content', 'option');
-    $about_image = get_field('about_image', 'option');
+    $about_images = get_field('about_images', 'option');
     
     ob_start();
     ?>
     <section id="about" class="about container">
-        <?php if ($about_image): ?>
-            <img class="fade-in-left" src="<?php echo esc_url($about_image['url']); ?>" 
-                 alt="<?php echo esc_attr($about_image['alt']); ?>">
-        <?php endif; ?>
+        <div class="about-carousel fade-in-left">
+            <?php if ($about_images && is_array($about_images)): ?>
+                <?php foreach ($about_images as $index => $image): ?>
+                    <div class="about-carousel-image <?php echo $index === 0 ? 'active' : ''; ?>" 
+                         style="background-image: url('<?php echo esc_url($image['url']); ?>');"
+                         data-alt="<?php echo esc_attr($image['alt']); ?>">
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="about-carousel-image active" 
+                     style="background-image: url('https://images.unsplash.com/photo-1519710164239-da123dc03ef4?q=80&w=1600&auto=format&fit=crop');"
+                     data-alt="Candlelit bistro tables with framed artwork on the walls">
+                </div>
+            <?php endif; ?>
+        </div>
         <div class="fade-in-right">
             <h2 class="outlined-heading">About</h2>
             <?php echo wp_kses_post($about_content); ?>
@@ -466,6 +509,231 @@ function demarchelier_handle_contact_form() {
 }
 add_action('wp_ajax_contact_form', 'demarchelier_handle_contact_form');
 add_action('wp_ajax_nopriv_contact_form', 'demarchelier_handle_contact_form');
+
+/**
+ * ACF Fields Setup
+ */
+function demarchelier_setup_acf_fields() {
+    // Only run if ACF is active
+    if (!class_exists('ACF')) {
+        return;
+    }
+    
+    // Check if fields already exist
+    $existing_group = get_field_object('hero_title', 'option');
+    if ($existing_group) {
+        return; // Fields already exist
+    }
+    
+    // Create the field group
+    $field_group = array(
+        'key' => 'group_demarchelier_theme_settings',
+        'title' => 'Demarchelier Theme Settings',
+        'fields' => array(
+            // Hero Section
+            array(
+                'key' => 'field_hero_title',
+                'label' => 'Hero Title',
+                'name' => 'hero_title',
+                'type' => 'text',
+                'default_value' => 'Classic French Bistro',
+                'required' => 1,
+            ),
+            array(
+                'key' => 'field_hero_subtitle',
+                'label' => 'Hero Subtitle',
+                'name' => 'hero_subtitle',
+                'type' => 'textarea',
+                'default_value' => 'Serving authentic French fare since 1978 — from Manhattan to Greenport Village',
+                'required' => 1,
+            ),
+            array(
+                'key' => 'field_hero_images',
+                'label' => 'Hero Images',
+                'name' => 'hero_images',
+                'type' => 'gallery',
+                'return_format' => 'array',
+                'min' => 1,
+                'max' => 4,
+                'required' => 1,
+            ),
+            array(
+                'key' => 'field_resy_link',
+                'label' => 'Reservation Link',
+                'name' => 'resy_link',
+                'type' => 'url',
+                'default_value' => 'https://resy.com/cities/greenport-ny/venues/demarchelier-bistro',
+                'required' => 1,
+            ),
+            
+            // Announcement
+            array(
+                'key' => 'field_announcement_text',
+                'label' => 'Announcement Text',
+                'name' => 'announcement_text',
+                'type' => 'text',
+                'default_value' => 'Open For New Years Eve - a la carte menu & Festive specials • closed New Years day • Cassoulet Every Thursday',
+            ),
+            
+            // About Section
+            array(
+                'key' => 'field_about_content',
+                'label' => 'About Content',
+                'name' => 'about_content',
+                'type' => 'wysiwyg',
+                'default_value' => 'Since 1978 we have served classic French <span class="accent-script">bistro</span> fare with a warm, family atmosphere. Our menu pairs traditional dishes with a predominantly French wine list. Join us for a quick bite at the bar or a relaxed dinner with friends.',
+            ),
+            array(
+                'key' => 'field_about_images',
+                'label' => 'About Images',
+                'name' => 'about_images',
+                'type' => 'gallery',
+                'return_format' => 'array',
+                'min' => 1,
+                'max' => 3,
+                'required' => 1,
+            ),
+            
+            // Menu Section
+            array(
+                'key' => 'field_menu_items',
+                'label' => 'Menu Items',
+                'name' => 'menu_items',
+                'type' => 'repeater',
+                'layout' => 'table',
+                'sub_fields' => array(
+                    array(
+                        'key' => 'field_menu_item',
+                        'label' => 'Menu Item',
+                        'name' => 'menu_item',
+                        'type' => 'text',
+                        'required' => 1,
+                    ),
+                ),
+            ),
+            array(
+                'key' => 'field_menu_pdf',
+                'label' => 'Menu PDF',
+                'name' => 'menu_pdf',
+                'type' => 'file',
+                'return_format' => 'array',
+            ),
+            
+            // Contact Info
+            array(
+                'key' => 'field_contact_info',
+                'label' => 'Contact Information',
+                'name' => 'contact_info',
+                'type' => 'group',
+                'sub_fields' => array(
+                    array(
+                        'key' => 'field_address',
+                        'label' => 'Address',
+                        'name' => 'address',
+                        'type' => 'textarea',
+                        'default_value' => '471 Main Street, Greenport NY 11944',
+                    ),
+                    array(
+                        'key' => 'field_phone',
+                        'label' => 'Phone',
+                        'name' => 'phone',
+                        'type' => 'text',
+                        'default_value' => '1.631.593.1650',
+                    ),
+                    array(
+                        'key' => 'field_email',
+                        'label' => 'Email',
+                        'name' => 'email',
+                        'type' => 'email',
+                        'default_value' => 'info@demarchelierbistro.com',
+                    ),
+                ),
+            ),
+            
+            // Gallery Section
+            array(
+                'key' => 'field_gallery_images',
+                'label' => 'Gallery Images',
+                'name' => 'gallery_images',
+                'type' => 'gallery',
+                'return_format' => 'array',
+                'min' => 1,
+                'max' => 4,
+                'required' => 1,
+            ),
+            
+            // Social Media
+            array(
+                'key' => 'field_social_media',
+                'label' => 'Social Media',
+                'name' => 'social_media',
+                'type' => 'group',
+                'sub_fields' => array(
+                    array(
+                        'key' => 'field_facebook',
+                        'label' => 'Facebook',
+                        'name' => 'facebook',
+                        'type' => 'url',
+                    ),
+                    array(
+                        'key' => 'field_instagram',
+                        'label' => 'Instagram',
+                        'name' => 'instagram',
+                        'type' => 'url',
+                    ),
+                    array(
+                        'key' => 'field_twitter',
+                        'label' => 'Twitter',
+                        'name' => 'twitter',
+                        'type' => 'url',
+                    ),
+                ),
+            ),
+        ),
+        'location' => array(
+            array(
+                array(
+                    'param' => 'options_page',
+                    'operator' => '==',
+                    'value' => 'acf-options',
+                ),
+            ),
+        ),
+        'menu_order' => 0,
+        'position' => 'normal',
+        'style' => 'default',
+        'label_placement' => 'top',
+        'instruction_placement' => 'label',
+        'hide_on_screen' => '',
+        'active' => true,
+        'description' => '',
+    );
+    
+    // Insert the field group
+    acf_add_local_field_group($field_group);
+}
+
+// Run the setup on theme activation
+add_action('after_setup_theme', 'demarchelier_setup_acf_fields');
+
+// Also run on admin init to ensure fields are created
+add_action('admin_init', 'demarchelier_setup_acf_fields');
+
+/**
+ * Add ACF Options Page
+ */
+function demarchelier_add_acf_options_page() {
+    if (function_exists('acf_add_options_page')) {
+        acf_add_options_page(array(
+            'page_title' => 'Theme Settings',
+            'menu_title' => 'Theme Settings',
+            'menu_slug' => 'theme-settings',
+            'capability' => 'edit_posts',
+            'redirect' => false
+        ));
+    }
+}
+add_action('acf/init', 'demarchelier_add_acf_options_page');
 
 /**
  * Customizer additions
@@ -585,15 +853,84 @@ function demarchelier_customize_register($wp_customize) {
         'type' => 'textarea',
     ));
     
-    $wp_customize->add_setting('about_image', array(
+    // About Images
+    $wp_customize->add_setting('about_image_1', array(
         'default' => '',
         'sanitize_callback' => 'esc_url_raw',
     ));
     
-    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'about_image', array(
-        'label' => __('About Section Image', 'demarchelier'),
+    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'about_image_1', array(
+        'label' => __('About Image 1', 'demarchelier'),
         'section' => 'demarchelier_options',
-        'description' => __('Upload the about section image', 'demarchelier'),
+        'description' => __('Upload the first about section image', 'demarchelier'),
+    )));
+    
+    $wp_customize->add_setting('about_image_2', array(
+        'default' => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ));
+    
+    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'about_image_2', array(
+        'label' => __('About Image 2', 'demarchelier'),
+        'section' => 'demarchelier_options',
+        'description' => __('Upload the second about section image', 'demarchelier'),
+    )));
+    
+    $wp_customize->add_setting('about_image_3', array(
+        'default' => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ));
+    
+    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'about_image_3', array(
+        'label' => __('About Image 3', 'demarchelier'),
+        'section' => 'demarchelier_options',
+        'description' => __('Upload the third about section image', 'demarchelier'),
+    )));
+    
+    // ===== GALLERY SECTION =====
+    // Gallery Images
+    $wp_customize->add_setting('gallery_image_1', array(
+        'default' => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ));
+    
+    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'gallery_image_1', array(
+        'label' => __('Gallery Image 1', 'demarchelier'),
+        'section' => 'demarchelier_options',
+        'description' => __('Upload the first gallery image', 'demarchelier'),
+    )));
+    
+    $wp_customize->add_setting('gallery_image_2', array(
+        'default' => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ));
+    
+    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'gallery_image_2', array(
+        'label' => __('Gallery Image 2', 'demarchelier'),
+        'section' => 'demarchelier_options',
+        'description' => __('Upload the second gallery image', 'demarchelier'),
+    )));
+    
+    $wp_customize->add_setting('gallery_image_3', array(
+        'default' => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ));
+    
+    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'gallery_image_3', array(
+        'label' => __('Gallery Image 3', 'demarchelier'),
+        'section' => 'demarchelier_options',
+        'description' => __('Upload the third gallery image', 'demarchelier'),
+    )));
+    
+    $wp_customize->add_setting('gallery_image_4', array(
+        'default' => '',
+        'sanitize_callback' => 'esc_url_raw',
+    ));
+    
+    $wp_customize->add_control(new WP_Customize_Image_Control($wp_customize, 'gallery_image_4', array(
+        'label' => __('Gallery Image 4', 'demarchelier'),
+        'section' => 'demarchelier_options',
+        'description' => __('Upload the fourth gallery image', 'demarchelier'),
     )));
     
     // ===== MENU SECTION =====
@@ -636,7 +973,7 @@ function demarchelier_customize_register($wp_customize) {
     ));
     
     $wp_customize->add_setting('hours_tuesday', array(
-        'default' => 'Tue: 5:00 PM - 9:00 PM',
+        'default' => 'Tue: 12:00 PM - 9:00 PM',
         'sanitize_callback' => 'sanitize_text_field',
     ));
     
@@ -647,7 +984,7 @@ function demarchelier_customize_register($wp_customize) {
     ));
     
     $wp_customize->add_setting('hours_wednesday', array(
-        'default' => 'Wed: 5:00 PM - 9:00 PM',
+        'default' => 'Wed: 12:00 PM - 9:00 PM',
         'sanitize_callback' => 'sanitize_text_field',
     ));
     
@@ -658,7 +995,7 @@ function demarchelier_customize_register($wp_customize) {
     ));
     
     $wp_customize->add_setting('hours_thursday', array(
-        'default' => 'Thu: 5:00 PM - 9:00 PM',
+        'default' => 'Thu: 12:00 PM - 9:00 PM',
         'sanitize_callback' => 'sanitize_text_field',
     ));
     
@@ -669,7 +1006,7 @@ function demarchelier_customize_register($wp_customize) {
     ));
     
     $wp_customize->add_setting('hours_friday', array(
-        'default' => 'Fri: 5:00 PM - 10:00 PM',
+        'default' => 'Fri: 12:00 PM - 9:30 PM',
         'sanitize_callback' => 'sanitize_text_field',
     ));
     
@@ -680,7 +1017,7 @@ function demarchelier_customize_register($wp_customize) {
     ));
     
     $wp_customize->add_setting('hours_saturday', array(
-        'default' => 'Sat: 5:00 PM - 10:00 PM',
+        'default' => 'Sat: 12:00 PM - 9:30 PM',
         'sanitize_callback' => 'sanitize_text_field',
     ));
     
@@ -691,7 +1028,7 @@ function demarchelier_customize_register($wp_customize) {
     ));
     
     $wp_customize->add_setting('hours_sunday', array(
-        'default' => 'Sun: 5:00 PM - 9:00 PM',
+        'default' => 'Sun: 12:00 PM - 8:30 PM',
         'sanitize_callback' => 'sanitize_text_field',
     ));
     

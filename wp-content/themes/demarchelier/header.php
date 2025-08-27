@@ -58,7 +58,7 @@
     
     <div class="announce">
         <div class="container">
-            <p><?php echo esc_html(get_theme_mod('announcement_text', 'Open For New Years Eve - a la carte menu & Festive specials • closed New Years day • Cassoulet Every Thursday')); ?></p>
+            <p><span class="announcement-prefix">Announcements:</span> <?php echo esc_html(get_theme_mod('announcement_text', 'Open For New Years Eve - a la carte menu & Festive specials • closed New Years day • Cassoulet Every Thursday')); ?></p>
         </div>
     </div>
 </header>
