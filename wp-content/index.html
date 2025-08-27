@@ -734,25 +734,7 @@
     window.addEventListener('scroll', checkScrollAnimations);
     window.addEventListener('load', checkScrollAnimations);
     
-    // Preloader
-    function hidePreloader() {
-      const preloader = document.getElementById('preloader');
-      if (preloader) {
-        preloader.classList.add('hidden');
-        setTimeout(() => {
-          preloader.style.display = 'none';
-        }, 500);
-      }
-    }
-    
-    // Wait for everything to load
-    window.addEventListener('load', () => {
-      // Additional delay to ensure smooth transition
-      setTimeout(hidePreloader, 1000);
-    });
-    
-    // Fallback: hide preloader after 3 seconds max
-    setTimeout(hidePreloader, 3000);
+    // Preloader is handled by theme.js
 
     // Year
     document.getElementById('year').textContent = new Date().getFullYear();

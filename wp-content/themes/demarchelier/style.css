@@ -27,7 +27,7 @@ Text Domain: demarchelier
 }
 
 /* Reset and Base Styles */
-html{box-sizing:border-box; scroll-behavior:smooth; -webkit-overflow-scrolling: touch}
+html{box-sizing:border-box; -webkit-overflow-scrolling: touch}
 body{margin:0; background:var(--bg); color:var(--ink);
   font-family: var(--font-body);
   font-size: 18px;
@@ -95,7 +95,6 @@ a:hover{text-decoration:underline}
   border: 2px solid #e8e2d8;
   border-top: 2px solid var(--burgundy);
   border-radius: 50%;
-  animation: spin 1s linear infinite;
   margin: 0 auto;
   opacity: 0;
   animation: spin 1s linear infinite, fadeIn 1s ease-out 0.9s forwards;
@@ -120,41 +119,6 @@ a:hover{text-decoration:underline}
 @keyframes spin{
   0%{transform: rotate(0deg)}
   100%{transform: rotate(360deg)}
-}
-
-.preloader-content{
-  text-align: center;
-}
-
-.preloader-logo{
-  font-family: var(--font-outlined);
-  font-size: 2.5rem;
-  font-weight: 600;
-  color: var(--burgundy);
-  margin-bottom: 1rem;
-  opacity: 0;
-  animation: fadeInUp 1s ease-out 0.3s forwards;
-}
-
-.preloader-subtitle{
-  font-family: var(--font-body);
-  font-size: 1rem;
-  color: var(--gray);
-  margin-bottom: 2rem;
-  opacity: 0;
-  animation: fadeInUp 1s ease-out 0.6s forwards;
-}
-
-.loading-spinner{
-  width: 40px;
-  height: 40px;
-  border: 2px solid #e8e2d8;
-  border-top: 2px solid var(--burgundy);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin: 0 auto;
-  opacity: 0;
-  animation: spin 1s linear infinite, fadeIn 1s ease-out 0.9s forwards;
 }
 
 @keyframes fadeInUp{
@@ -655,15 +619,23 @@ section{padding:80px 0; scroll-margin-top:120px; transform: translateZ(0)}
   .gallery-images{grid-template-columns:1fr}
   .signup-grid{grid-template-columns:1fr; gap:32px}
   .foot-grid{grid-template-columns:1fr; gap:16px; text-align:center}
-  nav{display:none}
+  nav{display:none; transition:none}
   .menu-toggle{display:flex; flex-direction:column; justify-content:space-between}
-  .nav-open nav{display:block; position:absolute; top:100%; left:0; right:0; background:#fff; padding:20px 16px; border-bottom:1px solid #e8e2d8; box-shadow:0 4px 12px rgba(0,0,0,0.1); z-index:1000; text-align:center}
-  .nav-open nav a{display:inline-block; padding:12px 0; border-bottom:1px solid #f5f5f5; font-size:1.1rem; background:#fff; position:relative; text-align:center; width:auto; margin:0 8px}
+  .nav-open nav{display:block; position:absolute; top:100%; left:0; right:0; background:#fff; padding:20px 16px; border-bottom:1px solid #e8e2d8; box-shadow:0 4px 12px rgba(0,0,0,0.1); z-index:1000; text-align:center; transition:none}
+  .nav-open nav a{display:inline-block; padding:12px 0; border-bottom:1px solid #f5f5f5; font-size:1.1rem; background:#fff; position:relative; text-align:center; width:auto; margin:0 8px; transition:none}
   .nav-open nav a:not(.btn):after{display:none}
   .nav-open nav a:not(.btn):hover:after{display:none}
   .nav-open nav a:last-child{border-bottom:none}
   .nav-open nav .btn{display:inline-block; margin-top:8px; background:var(--resy); color:#fff; border-color:var(--resy); width:100%; text-align:center; padding:12px 16px}
   .hero .btn{display:inline-block; margin-top:16px; min-width:200px; text-align:center}
+  
+  /* Mobile preloader adjustments */
+  .preloader-logo{font-size:2rem}
+  .preloader-subtitle{font-size:0.9rem}
+  .loading-spinner{width:32px; height:32px}
+  
+  /* Mobile hero background focal point */
+  .hero-bg{background-position:top 25%}
 }
 
 /* Motion preferences */

@@ -39,11 +39,6 @@
         $(document).on('click', '.nav-open #primary-nav a, .nav-open nav a', function(e) {
             const href = $(this).attr('href');
             
-            // Always close the menu first
-            header.removeClass('nav-open');
-            toggle.attr('aria-expanded', 'false');
-            toggle.removeClass('active');
-            
             // Only handle internal links (not external or special links)
             if (href && href.startsWith('#') && href.length > 1) {
                 e.preventDefault();
@@ -52,19 +47,26 @@
                 const targetElement = $('#' + targetId);
                 
                 if (targetElement.length) {
-                    // Small delay to ensure menu is closed before scrolling
-                    setTimeout(function() {
-                        // Calculate proper offset accounting for header only (menu is now closed)
-                        const headerHeight = header.outerHeight();
-                        const totalOffset = headerHeight + 60; // 60px extra padding for breathing room
-                        const targetOffset = targetElement.offset().top - totalOffset;
-                        
-                        // Smooth scroll to target with proper offset
-                        $('html, body').animate({
-                            scrollTop: targetOffset
-                        }, 800, 'easeOutCubic');
-                    }, 100); // 100ms delay
+                    // Close menu immediately without delay
+                    header.removeClass('nav-open');
+                    toggle.attr('aria-expanded', 'false');
+                    toggle.removeClass('active');
+                    
+                    // Calculate proper offset accounting for header only (menu is now closed)
+                    const headerHeight = header.outerHeight();
+                    const totalOffset = headerHeight + 40; // Reduced padding for faster feel
+                    const targetOffset = targetElement.offset().top - totalOffset;
+                    
+                    // Faster smooth scroll to target with proper offset
+                    $('html, body').animate({
+                        scrollTop: targetOffset
+                    }, 400, 'easeOutCubic'); // Reduced from 800ms to 400ms
                 }
+            } else {
+                // For external links, just close the menu
+                header.removeClass('nav-open');
+                toggle.attr('aria-expanded', 'false');
+                toggle.removeClass('active');
             }
         });
     }
@@ -120,7 +122,12 @@
      * Preloader
      */
     function initPreloader() {
+        let preloaderHidden = false;
+        
         function hidePreloader() {
+            if (preloaderHidden) return; // Prevent multiple calls
+            preloaderHidden = true;
+            
             const preloader = $('#preloader');
             if (preloader.length) {
                 preloader.addClass('hidden');
@@ -141,13 +148,23 @@
             hidePreloader();
         });
         
-        // Fallback: hide preloader after 2 seconds max
-        setTimeout(hidePreloader, 2000);
+        // Fallback: hide preloader after 1.5 seconds max (reduced from 2s)
+        setTimeout(hidePreloader, 1500);
         
-        // Additional fallback: hide on DOM ready
+        // Additional fallback: hide on DOM ready with shorter delay
         $(document).ready(function() {
-            setTimeout(hidePreloader, 1000);
+            setTimeout(hidePreloader, 500); // Reduced from 1000ms
         });
+        
+        // Emergency fallback: hide after 3 seconds no matter what
+        setTimeout(function() {
+            if (!preloaderHidden) {
+                const preloader = $('#preloader');
+                if (preloader.length) {
+                    preloader.remove(); // Force remove if still stuck
+                }
+            }
+        }, 3000);
     }
 
     /**
@@ -318,17 +335,25 @@
     }
 
     /**
-     * Smooth Scrolling for Anchor Links
+     * Smooth Scrolling for Anchor Links (excluding mobile nav links which are handled separately)
      */
-    $('a[href^="#"]').on('click', function(e) {
+    $(document).on('click', 'a[href^="#"]', function(e) {
+        // Skip if this is a mobile nav link (handled by initMobileNav)
+        if ($(this).closest('.nav-open').length) {
+            return;
+        }
+        
         const target = $(this.getAttribute('href'));
         
         if (target.length) {
             e.preventDefault();
             
+            const headerHeight = $('.site-header').outerHeight();
+            const targetOffset = target.offset().top - headerHeight - 20;
+            
             $('html, body').animate({
-                scrollTop: target.offset().top - 80 // Account for fixed header
-            }, 800);
+                scrollTop: targetOffset
+            }, 400, 'easeOutCubic'); // Faster animation
         }
     });
 
