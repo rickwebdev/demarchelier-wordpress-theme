@@ -1,0 +1,364 @@
+/**
+ * Gutenberg Editor Styles
+ * 
+ * @package Demarchelier
+ */
+
+/* Block Editor Container */
+.wp-block {
+    max-width: 1400px;
+}
+
+/* Hero Section Block */
+.hero-section-block {
+    position: relative;
+    height: 60vh;
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+    overflow: hidden;
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.4));
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.hero-preview {
+    position: relative;
+    z-index: 2;
+    padding: 2rem;
+}
+
+.hero-bg-preview {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+.hero-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+}
+
+.hero-bg.active {
+    opacity: 1;
+}
+
+.hero-content-preview h1 {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #fff;
+}
+
+.hero-content-preview .sub {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: #f1ede7;
+}
+
+/* About Section Block */
+.about-section-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: center;
+    padding: 40px 0;
+    border: 1px solid #e8e2d8;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+.about-image-preview {
+    text-align: center;
+}
+
+.about-image-preview img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.placeholder-image {
+    width: 100%;
+    height: 300px;
+    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    color: #666;
+}
+
+.about-content-preview h2 {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #7A1F2A;
+    margin-bottom: 1rem;
+}
+
+.about-content-preview .divider {
+    height: 1px;
+    background: linear-gradient(to right, #C9A227, transparent);
+    margin: 20px 0;
+}
+
+/* Menu Section Block */
+.menu-section-block {
+    background: linear-gradient(rgba(255,255,255,0.95), rgba(255,255,255,0.95));
+    border: 1px solid #e8e2d8;
+    border-radius: 8px;
+    padding: 40px;
+    margin: 20px 0;
+}
+
+.menu-section-block h2 {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #7A1F2A;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.menu-items-preview {
+    columns: 2;
+    gap: 24px;
+    padding-left: 18px;
+    margin-bottom: 2rem;
+}
+
+.menu-items-preview li {
+    margin-bottom: 0.5rem;
+    break-inside: avoid;
+}
+
+.menu-items-preview input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #e8e2d8;
+    border-radius: 4px;
+    font-family: "Lora", serif;
+}
+
+.menu-items-preview button {
+    margin-left: 8px;
+}
+
+/* Gallery Section Block */
+.gallery-section-block {
+    background: linear-gradient(rgba(255,255,255,0.9), rgba(255,255,255,0.9));
+    border: 1px solid #e8e2d8;
+    border-radius: 8px;
+    padding: 40px;
+    margin: 20px 0;
+}
+
+.gallery-preview {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+}
+
+.gallery-content-preview h2 {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #7A1F2A;
+    margin-bottom: 1rem;
+}
+
+.gallery-images-preview {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.gallery-images-preview img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #e8e2d8;
+}
+
+/* Contact Section Block */
+.contact-section-block {
+    background: linear-gradient(rgba(255,255,255,0.6), rgba(255,255,255,0.7));
+    border: 1px solid #e8e2d8;
+    border-radius: 8px;
+    padding: 40px;
+    margin: 20px 0;
+}
+
+.contact-preview {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+}
+
+.contact-content-preview h2 {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #7A1F2A;
+    margin-bottom: 1rem;
+}
+
+.contact-form-preview {
+    background: #faf9f7;
+    padding: 32px;
+    border-radius: 8px;
+    border: 1px solid #e8e2d8;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-family: "Lora", serif;
+    font-weight: 500;
+    color: #1F1F1F;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #e8e2d8;
+    border-radius: 4px;
+    font-family: "Lora", serif;
+    font-size: 1rem;
+    background: #fff;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+/* Button Styles */
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.25rem;
+    border: 1px solid #7A1F2A;
+    border-radius: 4px;
+    font-family: "Lora", serif;
+    font-weight: 500;
+    font-size: 1.05rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    background: #fff;
+    color: #7A1F2A;
+    cursor: pointer;
+}
+
+.btn.book {
+    background: #D73D38;
+    border-color: #D73D38;
+    color: #fff;
+}
+
+.btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+/* Mobile Responsive */
+@media (max-width: 900px) {
+    .about-section-block,
+    .gallery-preview,
+    .contact-preview {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+    
+    .menu-items-preview {
+        columns: 1;
+    }
+    
+    .gallery-images-preview {
+        grid-template-columns: 1fr;
+    }
+    
+    .hero-section-block {
+        height: 40vh;
+        min-height: 300px;
+    }
+    
+    .hero-content-preview h1 {
+        font-size: 2rem;
+    }
+    
+    .hero-content-preview .sub {
+        font-size: 1rem;
+    }
+}
+
+/* Block Controls */
+.block-editor-block-list__layout .wp-block {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.block-editor-block-list__layout .wp-block[data-align="wide"] {
+    max-width: 1400px;
+}
+
+.block-editor-block-list__layout .wp-block[data-align="full"] {
+    max-width: none;
+}
+
+/* Inspector Controls */
+.components-panel__body {
+    border: 1px solid #e8e2d8;
+    border-radius: 4px;
+    margin-bottom: 16px;
+}
+
+.components-panel__body-title {
+    background: #f7f4ef;
+    padding: 12px 16px;
+    margin: 0;
+    border-bottom: 1px solid #e8e2d8;
+}
+
+.components-panel__body-content {
+    padding: 16px;
+}
+
+/* Form Message Styles */
+.form-message {
+    padding: 12px 16px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-family: "Lora", serif;
+}
+
+.form-message.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.form-message.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+} 
