@@ -25,7 +25,7 @@ if (empty($hero_images)) {
     $hero_images = get_field('hero_images', 'option');
 }
 $resy_link = get_theme_mod('resy_link', 'https://resy.com/cities/greenport-ny/venues/demarchelier-bistro');
-$about_content = get_theme_mod('about_content', 'Since 1978 we have served classic French <span class="accent-script">bistro</span> fare with a warm, family atmosphere. Our menu pairs traditional dishes with a predominantly French wine list. Join us for a quick bite at the bar or a relaxed dinner with friends.');
+$about_content = get_theme_mod('about_content', 'Since Demarchelier opened in 1978 it has worked to bring a little piece of France to New York City and now the East End of Long Island. Every meal that leaves our kitchen expresses the soul of authentic French <span class="accent-script">bistro</span> fair. We continue to be a family owned and family run restaurant. Our comfortable, colorful, warm, familial spirit makes us a neighborhood fixture, ideal for a quick bite to eat, a romantic rendezvous or a meal with your family. Our traditional French menu is paired perfectly with a wide range of predominantly French wines.');
 
 // Get about images from Customizer
 $about_images = array();
@@ -96,6 +96,7 @@ $contact_info = array(
         <div class="hero-bg" style="background-image: url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=2000&auto=format&fit=crop')"></div>
     <?php endif; ?>
     <div class="inner container">
+        <div class="hero-brand">DEMARCHELIER</div>
         <h1><?php echo esc_html($hero_title); ?></h1>
         <p class="sub"><?php echo esc_html($hero_subtitle); ?></p>
         <a class="btn book" href="<?php echo esc_url($resy_link); ?>" target="_blank" rel="noopener"><?php _e('Book a Table', 'demarchelier'); ?></a>
@@ -129,7 +130,7 @@ $contact_info = array(
         <?php if ($about_content): ?>
             <?php echo wp_kses_post($about_content); ?>
         <?php else: ?>
-            <p><?php _e('Since 1978 we have served classic French', 'demarchelier'); ?> <span class="accent-script"><?php _e('bistro', 'demarchelier'); ?></span> <?php _e('fare with a warm, family atmosphere. Our menu pairs traditional dishes with a predominantly French wine list. Join us for a quick bite at the bar or a relaxed dinner with friends.', 'demarchelier'); ?></p>
+            <p><?php _e('Since Demarchelier opened in 1978 it has worked to bring a little piece of France to New York City and now the East End of Long Island. Every meal that leaves our kitchen expresses the soul of authentic French', 'demarchelier'); ?> <span class="accent-script"><?php _e('bistro', 'demarchelier'); ?></span> <?php _e('fair. We continue to be a family owned and family run restaurant. Our comfortable, colorful, warm, familial spirit makes us a neighborhood fixture, ideal for a quick bite to eat, a romantic rendezvous or a meal with your family. Our traditional French menu is paired perfectly with a wide range of predominantly French wines.', 'demarchelier'); ?></p>
         <?php endif; ?>
         <div class="divider"></div>
         <p class="accent">471 Main Street, Greenport NY</p>
@@ -140,29 +141,59 @@ $contact_info = array(
 <section id="menu" class="menu" <?php if (get_theme_mod('menu_background')): ?>style="background: linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.9)), url('<?php echo esc_url(get_theme_mod('menu_background')); ?>') center/cover no-repeat;"<?php endif; ?>>
     <div class="container">
         <h2 class="outlined-heading fade-in-up"><?php _e('Menu Highlights', 'demarchelier'); ?></h2>
-        <?php if ($menu_items && is_array($menu_items)): ?>
-            <ul class="fade-in-up">
-                <?php foreach ($menu_items as $item): ?>
-                    <?php if (is_array($item) && isset($item['menu_item'])): ?>
-                        <li><?php echo esc_html($item['menu_item']); ?></li>
-                    <?php elseif (is_string($item)): ?>
-                        <li><?php echo esc_html($item); ?></li>
-                    <?php endif; ?>
-                <?php endforeach; ?>
-            </ul>
-        <?php else: ?>
-            <ul class="fade-in-up">
-                <li><?php _e('Duck Confit with gratin dauphinois', 'demarchelier'); ?></li>
-                <li><?php _e('Steak Frites with bordelaise', 'demarchelier'); ?></li>
-                <li><?php _e('Steak Tartare with pommes dauphine', 'demarchelier'); ?></li>
-                <li><?php _e('Chicken Paillard with mesclun salad', 'demarchelier'); ?></li>
-                <li><?php _e('Roasted Salmon with beurre blanc', 'demarchelier'); ?></li>
-                <li><?php _e('Calf Liver Bordelaise with mashed potatoes', 'demarchelier'); ?></li>
-                <li><?php _e('Onion Soup Gratinée', 'demarchelier'); ?></li>
-                <li><?php _e('Crème Brûlée', 'demarchelier'); ?></li>
-            </ul>
-        <?php endif; ?>
-        <a class="btn fade-in-up" href="<?php echo esc_url($menu_pdf ? $menu_pdf['url'] : '#'); ?>" target="_blank" rel="noopener" <?php echo !$menu_pdf ? 'onclick="alert(\'Menu PDF not yet uploaded. Please contact us for the current menu.\'); return false;"' : ''; ?>><?php _e('Download Full Menu (PDF)', 'demarchelier'); ?></a>
+        <ul class="fade-in-up">
+            <?php
+            // Get menu items from Customizer settings
+            $menu_items = array();
+            for ($i = 1; $i <= 8; $i++) {
+                $item = get_theme_mod('menu_item_' . $i);
+                if (!empty($item)) {
+                    $menu_items[] = $item;
+                }
+            }
+            
+            // If no Customizer items, fall back to ACF or defaults
+            if (empty($menu_items)) {
+                if ($menu_items_acf && is_array($menu_items_acf)) {
+                    foreach ($menu_items_acf as $item) {
+                        if (is_array($item) && isset($item['menu_item'])) {
+                            echo '<li>' . esc_html($item['menu_item']) . '</li>';
+                        } elseif (is_string($item)) {
+                            echo '<li>' . esc_html($item) . '</li>';
+                        }
+                    }
+                } else {
+                    // Default fallback items
+                    $default_items = array(
+                        'Duck Confit with gratin dauphinois',
+                        'Steak Frites with bordelaise',
+                        'Steak Tartare with pommes dauphine',
+                        'Chicken Paillard with mesclun salad',
+                        'Roasted Salmon with beurre blanc',
+                        'Calf Liver Bordelaise with mashed potatoes',
+                        'Onion Soup Gratinée',
+                        'Crème Brûlée'
+                    );
+                    foreach ($default_items as $item) {
+                        echo '<li>' . esc_html($item) . '</li>';
+                    }
+                }
+            } else {
+                // Display Customizer menu items
+                foreach ($menu_items as $item) {
+                    echo '<li>' . esc_html($item) . '</li>';
+                }
+            }
+            ?>
+        </ul>
+        <?php
+        // Get menu PDF from Customizer or ACF
+        $menu_pdf_url = get_theme_mod('menu_pdf_file');
+        if (!$menu_pdf_url && $menu_pdf) {
+            $menu_pdf_url = $menu_pdf['url'];
+        }
+        ?>
+        <a class="btn fade-in-up" href="<?php echo esc_url($menu_pdf_url ? $menu_pdf_url : '#'); ?>" target="_blank" rel="noopener" <?php echo !$menu_pdf_url ? 'onclick="alert(\'Menu PDF not yet uploaded. Please contact us for the current menu.\'); return false;"' : ''; ?>><?php _e('Download Full Menu (PDF)', 'demarchelier'); ?></a>
     </div>
 </section>
 
@@ -221,6 +252,22 @@ $contact_info = array(
                     <a href="mailto:info@demarchelierbistro.com">info@demarchelierbistro.com</a>
                 <?php endif; ?>
             </p>
+            <div class="social-icons">
+                <?php 
+                $instagram = get_theme_mod('instagram', 'https://www.instagram.com/demarchelierbistro/');
+                $facebook = get_theme_mod('facebook', 'https://www.facebook.com/demarchelierbistro/');
+                ?>
+                <a href="<?php echo esc_url($instagram); ?>" target="_blank" rel="noopener" class="social-icon" aria-label="<?php _e('Follow us on Instagram', 'demarchelier'); ?>">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                </a>
+                <a href="<?php echo esc_url($facebook); ?>" target="_blank" rel="noopener" class="social-icon" aria-label="<?php _e('Follow us on Facebook', 'demarchelier'); ?>">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                    </svg>
+                </a>
+            </div>
             <p><a class="btn book" href="<?php echo esc_url($resy_link); ?>" target="_blank" rel="noopener"><?php _e('Book a Table', 'demarchelier'); ?></a></p>
         </div>
     </div>
@@ -232,7 +279,7 @@ $contact_info = array(
         <div class="gallery-content">
             <div class="fade-in-left">
                 <h2 class="outlined-heading"><?php _e('Gallery', 'demarchelier'); ?></h2>
-                <p><?php _e('Explore artwork from our family collection and the late Eric Demarchelier.', 'demarchelier'); ?></p>
+                <p><?php _e('Explore artwork from our family collection and by Eric Demarchelier.', 'demarchelier'); ?></p>
                 <a class="btn" href="https://www.ericdemarchelier.com/shop-art" target="_blank" rel="noopener"><?php _e('Visit Gallery Site', 'demarchelier'); ?></a>
             </div>
             <div class="gallery-images fade-in-right">

@@ -30,7 +30,7 @@ Text Domain: demarchelier
 html{box-sizing:border-box; -webkit-overflow-scrolling: touch}
 body{margin:0; background:var(--bg); color:var(--ink);
   font-family: var(--font-body);
-  font-size: 18px;
+  font-size: 20px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -201,7 +201,7 @@ h3{font-size:clamp(24px, 3vw, 32px)}
   text-stroke: 1px var(--burgundy);
   letter-spacing: 0.5px;
   text-transform: uppercase;
-  margin: 0.3em 0 0.6em;
+  margin: 0.3em 0 0.3em;
 }
 .sub{color:#f1ede7; margin:.5rem 0 2rem; font-size:clamp(18px, 2.5vw, 26px); font-weight:500; letter-spacing:0.3px; text-wrap:balance; overflow-wrap:normal; line-height:1.4}
 
@@ -217,10 +217,23 @@ h3{font-size:clamp(24px, 3vw, 32px)}
   filter: drop-shadow(0 0 8px rgba(255,255,255,0.3));
 }
 
+.hero-brand{
+  font-family: var(--font-heading);
+  font-size: clamp(42px, 7vw, 72px);
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 0;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
 .hero h1{
-  font-size: clamp(36px, 6vw, 64px);
+  font-size: clamp(28px, 4vw, 48px);
   letter-spacing: 1.5px;
-  margin-bottom: 1rem;
+  margin-top: -0.5rem;
+  margin-bottom: 0.75rem;
 }
 
 @keyframes shimmer{
@@ -326,8 +339,12 @@ section{padding:80px 0; scroll-margin-top:120px; transform: translateZ(0)}
   transform: translateX(0);
 }
 
-.about p{color:var(--ink)}
-.accent{font-family:var(--font-heading); font-weight:600; letter-spacing:.03em}
+.about p{
+  color: var(--ink);
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+.accent{font-family:var(--font-heading); font-weight:600; letter-spacing:.03em; font-size: 1.4rem}
 .divider{height:1px; background:linear-gradient(to right, var(--gold), transparent); margin:24px 0}
 
 /* Accent script utility. Use for a single short word only. */
@@ -342,16 +359,73 @@ section{padding:80px 0; scroll-margin-top:120px; transform: translateZ(0)}
 .card h3{margin-top:0}
 
 .menu{
-  background: linear-gradient(rgba(255,255,255,0.95), rgba(255,255,255,0.95)), 
+  background: linear-gradient(rgba(255,255,255,0.92), rgba(255,255,255,0.92)), 
               url("https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=2000&auto=format&fit=crop") center/cover no-repeat;
   border-top: 1px solid #e8e2d8;
   border-bottom: 1px solid #e8e2d8;
   position: relative;
+  padding: 60px 0;
 }
 
+.menu .container{
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
 
-.menu ul{columns:2; gap:24px; padding-left:18px; margin-top:0}
-.menu .btn{margin-top:12px}
+.menu h2{
+  margin-bottom: 2rem;
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  letter-spacing: 1px;
+}
+
+.menu ul{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem 0;
+  text-align: left;
+}
+
+.menu ul li{
+  position: relative;
+  padding: 0.75rem 0;
+  font-family: var(--font-body);
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--ink);
+  border-bottom: 1px solid rgba(122, 31, 42, 0.15);
+}
+
+.menu ul li:before{
+  content: "•";
+  color: var(--burgundy);
+  font-weight: bold;
+  font-size: 1.2rem;
+  position: absolute;
+  left: -1.5rem;
+  top: 0.75rem;
+}
+
+.menu .btn{
+  margin-top: 1.5rem;
+  font-size: 1.1rem;
+  padding: 1rem 2rem;
+  background: var(--burgundy);
+  color: #fff;
+  border-color: var(--burgundy);
+  transition: all 0.3s ease;
+}
+
+.menu .btn:hover{
+  background: #fff;
+  color: var(--burgundy);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(122, 31, 42, 0.2);
+}
 
 .gallery-card{display:flex; justify-content:space-between; align-items:center; gap:16px; background:#fff; border:1px solid #e8e2d8; border-radius:8px; padding:20px}
 .gallery-card img{width:160px; border-radius:6px}
@@ -560,7 +634,7 @@ section{padding:80px 0; scroll-margin-top:120px; transform: translateZ(0)}
 .social-icons{
   display: flex;
   gap: 12px;
-  margin-top: 8px;
+  margin: 1rem 0;
   justify-content: flex-start;
   align-items: center;
 }
@@ -584,6 +658,17 @@ section{padding:80px 0; scroll-margin-top:120px; transform: translateZ(0)}
   background: var(--burgundy);
   color: #fff;
   transform: translateY(-2px);
+}
+
+/* Override footer link colors for social icons */
+.site-footer .social-icon{
+  color: var(--burgundy) !important;
+  border-color: var(--burgundy) !important;
+}
+
+.site-footer .social-icon:hover{
+  background: var(--burgundy) !important;
+  color: #fff !important;
 }
 
 /* WordPress specific styles */
@@ -611,14 +696,28 @@ section{padding:80px 0; scroll-margin-top:120px; transform: translateZ(0)}
   .logo{font-size:24px; margin-left:16px}
   .logo .bistro{font-size:18px}
   .menu-toggle{margin-right:16px}
-  .about{grid-template-columns:1fr}
-  .about-carousel{height:350px}
+  .about{grid-template-columns:1fr; padding: 0 1.5rem; margin-top: 2rem}
+  .about-carousel{height:350px; padding: 1.5rem 1.5rem 0 1.5rem}
   .info-grid{grid-template-columns:1fr}
-  .menu ul{columns:1}
+  .menu ul{
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  
+  .menu ul li{
+    padding: 0.5rem 0;
+    font-size: 1.1rem;
+  }
+  
+  .menu ul li:before{
+    left: -1rem;
+    top: 1rem;
+  }
   .gallery-content{grid-template-columns:1fr; gap:32px}
   .gallery-images{grid-template-columns:1fr}
   .signup-grid{grid-template-columns:1fr; gap:32px}
   .foot-grid{grid-template-columns:1fr; gap:16px; text-align:center}
+  .social-icons{justify-content:center}
   nav{display:none; transition:none}
   .menu-toggle{display:flex; flex-direction:column; justify-content:space-between}
   .nav-open nav{display:block; position:absolute; top:100%; left:0; right:0; background:#fff; padding:20px 16px; border-bottom:1px solid #e8e2d8; box-shadow:0 4px 12px rgba(0,0,0,0.1); z-index:1000; text-align:center; transition:none}

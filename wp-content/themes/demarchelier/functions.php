@@ -414,23 +414,68 @@ function demarchelier_render_about_block($attributes) {
 }
 
 function demarchelier_render_menu_block($attributes) {
-    $menu_items = get_field('menu_items', 'option');
-    $menu_pdf = get_field('menu_pdf', 'option');
+    $menu_items_acf = get_field('menu_items', 'option');
+    $menu_pdf_acf = get_field('menu_pdf', 'option');
     
     ob_start();
     ?>
     <section id="menu" class="menu">
         <div class="container">
             <h2 class="outlined-heading fade-in-up">Menu Highlights</h2>
-            <?php if ($menu_items): ?>
-                <ul class="fade-in-up">
-                    <?php foreach ($menu_items as $item): ?>
-                        <li><?php echo esc_html($item['menu_item']); ?></li>
-                    <?php endforeach; ?>
-                </ul>
-            <?php endif; ?>
-            <?php if ($menu_pdf): ?>
-                <a class="btn fade-in-up" href="<?php echo esc_url($menu_pdf['url']); ?>" target="_blank" rel="noopener">Download full menu (PDF)</a>
+            <ul class="fade-in-up">
+                <?php
+                // Get menu items from Customizer settings
+                $menu_items = array();
+                for ($i = 1; $i <= 8; $i++) {
+                    $item = get_theme_mod('menu_item_' . $i);
+                    if (!empty($item)) {
+                        $menu_items[] = $item;
+                    }
+                }
+                
+                // If no Customizer items, fall back to ACF or defaults
+                if (empty($menu_items)) {
+                    if ($menu_items_acf && is_array($menu_items_acf)) {
+                        foreach ($menu_items_acf as $item) {
+                            if (is_array($item) && isset($item['menu_item'])) {
+                                echo '<li>' . esc_html($item['menu_item']) . '</li>';
+                            } elseif (is_string($item)) {
+                                echo '<li>' . esc_html($item) . '</li>';
+                            }
+                        }
+                    } else {
+                        // Default fallback items
+                        $default_items = array(
+                            'Duck Confit with gratin dauphinois',
+                            'Steak Frites with bordelaise',
+                            'Steak Tartare with pommes dauphine',
+                            'Chicken Paillard with mesclun salad',
+                            'Roasted Salmon with beurre blanc',
+                            'Calf Liver Bordelaise with mashed potatoes',
+                            'Onion Soup Gratinée',
+                            'Crème Brûlée'
+                        );
+                        foreach ($default_items as $item) {
+                            echo '<li>' . esc_html($item) . '</li>';
+                        }
+                    }
+                } else {
+                    // Display Customizer menu items
+                    foreach ($menu_items as $item) {
+                        echo '<li>' . esc_html($item) . '</li>';
+                    }
+                }
+                ?>
+            </ul>
+            <?php
+            // Get menu PDF from Customizer or ACF
+            $menu_pdf_url = get_theme_mod('menu_pdf_file');
+            if (!$menu_pdf_url && $menu_pdf_acf) {
+                $menu_pdf_url = $menu_pdf_acf['url'];
+            }
+            ?>
+            <?php if ($menu_pdf_url): ?>
+                <a class="btn fade-in-up" href="<?php echo esc_url($menu_pdf_url); ?>" target="_blank" rel="noopener">Download full menu (PDF)</a>
             <?php endif; ?>
         </div>
     </section>
@@ -843,7 +888,7 @@ function demarchelier_customize_register($wp_customize) {
     // ===== ABOUT SECTION =====
     // Add setting for about content
     $wp_customize->add_setting('about_content', array(
-        'default' => 'Since 1978 we have served classic French <span class="accent-script">bistro</span> fare with a warm, family atmosphere. Our menu pairs traditional dishes with a predominantly French wine list. Join us for a quick bite at the bar or a relaxed dinner with friends.',
+        'default' => 'Since Demarchelier opened in 1978 it has worked to bring a little piece of France to New York City and now the East End of Long Island. Every meal that leaves our kitchen expresses the soul of authentic French <span class="accent-script">bistro</span> fair. We continue to be a family owned and family run restaurant. Our comfortable, colorful, warm, familial spirit makes us a neighborhood fixture, ideal for a quick bite to eat, a romantic rendezvous or a meal with your family. Our traditional French menu is paired perfectly with a wide range of predominantly French wines.',
         'sanitize_callback' => 'wp_kses_post',
     ));
     
@@ -958,6 +1003,111 @@ function demarchelier_customize_register($wp_customize) {
         'description' => __('Upload your menu PDF file', 'demarchelier'),
         'mime_type' => 'application/pdf',
     )));
+    
+    // ===== MENU HIGHLIGHTS SECTION =====
+    // Menu Item 1
+    $wp_customize->add_setting('menu_item_1', array(
+        'default' => 'Duck Confit with gratin dauphinois',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+    
+    $wp_customize->add_control('menu_item_1', array(
+        'label' => __('Menu Item 1', 'demarchelier'),
+        'section' => 'demarchelier_options',
+        'type' => 'text',
+        'description' => __('First menu highlight item', 'demarchelier'),
+    ));
+    
+    // Menu Item 2
+    $wp_customize->add_setting('menu_item_2', array(
+        'default' => 'Steak Frites with bordelaise',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+    
+    $wp_customize->add_control('menu_item_2', array(
+        'label' => __('Menu Item 2', 'demarchelier'),
+        'section' => 'demarchelier_options',
+        'type' => 'text',
+        'description' => __('Second menu highlight item', 'demarchelier'),
+    ));
+    
+    // Menu Item 3
+    $wp_customize->add_setting('menu_item_3', array(
+        'default' => 'Steak Tartare with pommes dauphine',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+    
+    $wp_customize->add_control('menu_item_3', array(
+        'label' => __('Menu Item 3', 'demarchelier'),
+        'section' => 'demarchelier_options',
+        'type' => 'text',
+        'description' => __('Third menu highlight item', 'demarchelier'),
+    ));
+    
+    // Menu Item 4
+    $wp_customize->add_setting('menu_item_4', array(
+        'default' => 'Chicken Paillard with mesclun salad',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+    
+    $wp_customize->add_control('menu_item_4', array(
+        'label' => __('Menu Item 4', 'demarchelier'),
+        'section' => 'demarchelier_options',
+        'type' => 'text',
+        'description' => __('Fourth menu highlight item', 'demarchelier'),
+    ));
+    
+    // Menu Item 5
+    $wp_customize->add_setting('menu_item_5', array(
+        'default' => 'Roasted Salmon with beurre blanc',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+    
+    $wp_customize->add_control('menu_item_5', array(
+        'label' => __('Menu Item 5', 'demarchelier'),
+        'section' => 'demarchelier_options',
+        'type' => 'text',
+        'description' => __('Fifth menu highlight item', 'demarchelier'),
+    ));
+    
+    // Menu Item 6
+    $wp_customize->add_setting('menu_item_6', array(
+        'default' => 'Calf Liver Bordelaise with mashed potatoes',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+    
+    $wp_customize->add_control('menu_item_6', array(
+        'label' => __('Menu Item 6', 'demarchelier'),
+        'section' => 'demarchelier_options',
+        'type' => 'text',
+        'description' => __('Sixth menu highlight item', 'demarchelier'),
+    ));
+    
+    // Menu Item 7
+    $wp_customize->add_setting('menu_item_7', array(
+        'default' => 'Onion Soup Gratinée',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+    
+    $wp_customize->add_control('menu_item_7', array(
+        'label' => __('Menu Item 7', 'demarchelier'),
+        'section' => 'demarchelier_options',
+        'type' => 'text',
+        'description' => __('Seventh menu highlight item', 'demarchelier'),
+    ));
+    
+    // Menu Item 8
+    $wp_customize->add_setting('menu_item_8', array(
+        'default' => 'Crème Brûlée',
+        'sanitize_callback' => 'sanitize_text_field',
+    ));
+    
+    $wp_customize->add_control('menu_item_8', array(
+        'label' => __('Menu Item 8', 'demarchelier'),
+        'section' => 'demarchelier_options',
+        'type' => 'text',
+        'description' => __('Eighth menu highlight item', 'demarchelier'),
+    ));
     
     // ===== HOURS SECTION =====
     // Hours Section
