@@ -47,7 +47,7 @@ update_option('options_hours', $hours);
 $contact_info = array(
     'address' => '471 Main Street, Greenport NY 11944',
     'phone' => '1.631.593.1650',
-    'email' => 'info@demarchelierbistro.com'
+    'email' => 'demarcheliergreenport@gmail.com'
 );
 update_option('options_contact_info', $contact_info);
 

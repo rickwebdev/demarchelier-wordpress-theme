@@ -19,23 +19,28 @@
     <meta property="og:url" content="<?php echo esc_url(home_url('/')); ?>">
     <meta property="og:site_name" content="Demarchelier Bistro">
     <meta property="og:locale" content="en_US">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:secure_url" content="<?php echo esc_url($og_image); ?>">
     
     <!-- Open Graph Image -->
     <?php 
     $og_image = get_theme_mod('og_image');
-    if ($og_image): ?>
-        <meta property="og:image" content="<?php echo esc_url($og_image); ?>">
-        <meta property="og:image:width" content="1200">
-        <meta property="og:image:height" content="630">
-    <?php endif; ?>
+    if (!$og_image) {
+        // Fallback to theme screenshot if no custom OG image is set
+        $og_image = get_template_directory_uri() . '/screenshot.png';
+    }
+    ?>
+    <meta property="og:image" content="<?php echo esc_url($og_image); ?>">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="<?php echo esc_attr(get_bloginfo('name') . ' - ' . get_bloginfo('description')); ?>">
     
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="<?php echo esc_attr(get_theme_mod('twitter_title', 'Demarchelier Bistro - Classic French Restaurant')); ?>">
     <meta name="twitter:description" content="<?php echo esc_attr(get_theme_mod('twitter_description', 'Authentic French bistro cuisine in Greenport, NY since 1978')); ?>">
-    <?php if ($og_image): ?>
-        <meta name="twitter:image" content="<?php echo esc_url($og_image); ?>">
-    <?php endif; ?>
+    <meta name="twitter:image" content="<?php echo esc_url($og_image); ?>">
+    <meta name="twitter:image:alt" content="<?php echo esc_attr(get_bloginfo('name') . ' - ' . get_bloginfo('description')); ?>">
     
     <!-- Geo Meta Tags -->
     <meta name="geo.region" content="US-NY">
@@ -49,11 +54,26 @@
     <meta name="restaurant:accepts_reservations" content="true">
     <meta name="restaurant:serves_alcohol" content="true">
     
+    <!-- Additional Open Graph Restaurant Tags -->
+    <meta property="restaurant:price_range" content="$$$">
+    <meta property="restaurant:cuisine" content="French">
+    <meta property="restaurant:accepts_reservations" content="true">
+    <meta property="restaurant:serves_alcohol" content="true">
+    <meta property="restaurant:opening_hours" content="Tuesday-Sunday: 5:30 PM - 10:30 PM">
+    <meta property="restaurant:street_address" content="50 E 86th St">
+    <meta property="restaurant:locality" content="New York">
+    <meta property="restaurant:region" content="NY">
+    <meta property="restaurant:postal_code" content="10028">
+    <meta property="restaurant:country" content="US">
+    <meta property="restaurant:phone_number" content="(212) 249-9193">
+    
     <!-- Canonical URL -->
     <link rel="canonical" href="<?php echo esc_url(home_url($_SERVER['REQUEST_URI'])); ?>">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="<?php echo esc_url(get_theme_mod('favicon', get_template_directory_uri() . '/favicon.ico')); ?>">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?php echo esc_url(get_theme_mod('favicon', get_template_directory_uri() . '/favicon.png')); ?>">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?php echo esc_url(get_theme_mod('favicon', get_template_directory_uri() . '/favicon.png')); ?>">
+    <link rel="shortcut icon" href="<?php echo esc_url(get_theme_mod('favicon', get_template_directory_uri() . '/favicon.png')); ?>">
     <link rel="apple-touch-icon" href="<?php echo esc_url(get_theme_mod('apple_touch_icon', get_template_directory_uri() . '/apple-touch-icon.png')); ?>">
     
     <!-- Preconnect to external domains -->

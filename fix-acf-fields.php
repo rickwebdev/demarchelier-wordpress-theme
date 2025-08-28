@@ -146,7 +146,7 @@ $field_group = array(
                     'label' => 'Email',
                     'name' => 'email',
                     'type' => 'email',
-                    'default_value' => 'info@demarchelierbistro.com',
+                    'default_value' => 'demarcheliergreenport@gmail.com',
                 ),
             ),
         ),
@@ -265,7 +265,7 @@ update_option('options_hours', $default_hours);
 update_option('options_contact_info', array(
     'address' => '471 Main Street, Greenport NY 11944',
     'phone' => '1.631.593.1650',
-    'email' => 'info@demarchelierbistro.com'
+    'email' => 'demarcheliergreenport@gmail.com'
 ));
 update_option('options_social_links', array(
     'instagram' => 'https://www.instagram.com/demarchelierbistro/',

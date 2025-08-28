@@ -66,9 +66,9 @@ if ($form_id) {
     update_post_meta($form_id, '_form', $form_content);
     update_post_meta($form_id, '_mail', array(
         'subject' => 'New message from Demarchelier website',
-        'sender' => 'Demarchelier <noreply@demarchelierbistro.com>',
+        'sender' => 'Demarchelier <noreply@demarchelierrestaurant.com>',
         'body' => $mail_content,
-        'recipient' => 'info@demarchelierbistro.com',
+        'recipient' => 'info@demarchelierrestaurant.com',
         'additional_headers' => 'Content-Type: text/html; charset=UTF-8',
         'attachments' => '',
         'use_html' => 1,
@@ -79,7 +79,7 @@ if ($form_id) {
     update_post_meta($form_id, '_mail_2', array(
         'active' => 1,
         'subject' => 'Thank you for contacting Demarchelier',
-        'sender' => 'Demarchelier <info@demarchelierbistro.com>',
+        'sender' => 'Demarchelier <info@demarchelierrestaurant.com>',
         'body' => $mail_2_content,
         'recipient' => '[email]',
         'additional_headers' => 'Content-Type: text/html; charset=UTF-8',

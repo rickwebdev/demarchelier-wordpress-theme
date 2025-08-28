@@ -13,7 +13,7 @@
             <strong><?php _e('Contact', 'demarchelier'); ?></strong><br>
             <?php 
             $phone = get_theme_mod('phone', '1.631.593.1650');
-            $email = get_theme_mod('email', 'info@demarchelierbistro.com');
+            $email = get_theme_mod('email', 'demarcheliergreenport@gmail.com');
             ?>
             <a href="tel:<?php echo esc_attr($phone); ?>"><?php echo esc_html($phone); ?></a><br>
             <a href="mailto:<?php echo esc_attr($email); ?>"><?php echo esc_html($email); ?></a><br>

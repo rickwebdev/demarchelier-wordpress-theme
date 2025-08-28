@@ -108,7 +108,7 @@ array(
 array(
     'address' => '471 Main Street, Greenport NY 11944',
     'phone' => '1.631.593.1650',
-    'email' => 'info@demarchelierbistro.com'
+    'email' => 'demarcheliergreenport@gmail.com'
 )
 ```
 

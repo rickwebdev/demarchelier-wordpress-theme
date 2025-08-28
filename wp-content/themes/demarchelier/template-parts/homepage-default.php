@@ -77,7 +77,7 @@ $hours = array(
 $contact_info = array(
     'address' => get_theme_mod('address', '471 Main Street, Greenport, NY 11944'),
     'phone' => get_theme_mod('phone', '1.631.593.1650'),
-    'email' => get_theme_mod('email', 'info@demarchelierbistro.com'),
+    'email' => get_theme_mod('email', 'demarcheliergreenport@gmail.com'),
 );
 ?>
 
@@ -260,7 +260,7 @@ $contact_info = array(
                 <?php if ($contact_info && $contact_info['email']): ?>
                     <a href="mailto:<?php echo esc_attr($contact_info['email']); ?>"><?php echo esc_html($contact_info['email']); ?></a>
                 <?php else: ?>
-                    <a href="mailto:info@demarchelierbistro.com">info@demarchelierbistro.com</a>
+                    <a href="mailto:demarcheliergreenport@gmail.com">demarcheliergreenport@gmail.com</a>
                 <?php endif; ?>
             </p>
             <div class="social-icons">
@@ -290,7 +290,7 @@ $contact_info = array(
         <div class="gallery-content">
             <div class="fade-in-left">
                 <h2 class="outlined-heading"><?php _e('Gallery', 'demarchelier'); ?></h2>
-                <p><?php _e('Explore artwork from our family collection and by Eric Demarchelier.', 'demarchelier'); ?></p>
+                <p><?php _e('Explore the artwork of Eric Demarchelier.', 'demarchelier'); ?></p>
                 <a class="btn" href="https://www.ericdemarchelier.com/shop-art" target="_blank" rel="noopener"><?php _e('Visit Gallery Site', 'demarchelier'); ?></a>
             </div>
             <div class="gallery-images fade-in-right">

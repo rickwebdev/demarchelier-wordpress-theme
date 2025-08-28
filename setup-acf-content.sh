@@ -123,7 +123,7 @@ echo "Creating ACF field groups..."
                     "label": "Email",
                     "name": "email",
                     "type": "email",
-                    "default_value": "info@demarchelierbistro.com"
+                    "default_value": "demarcheliergreenport@gmail.com"
                 }
             ]
         }
@@ -142,7 +142,7 @@ echo "Setting up default content..."
 # Set contact info
 ./wp-cli.sh option add _options_contact_info_address "471 Main Street, Greenport, NY 11944"
 ./wp-cli.sh option add _options_contact_info_phone "1.631.593.1650"
-./wp-cli.sh option add _options_contact_info_email "info@demarchelierbistro.com"
+./wp-cli.sh option add _options_contact_info_email "demarcheliergreenport@gmail.com"
 
 # Set hours
 ./wp-cli.sh option add _options_hours_0_day "Tuesday - Friday"

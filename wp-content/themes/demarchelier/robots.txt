@@ -20,7 +20,7 @@ Allow: /wp-content/uploads/*.gif
 Allow: /wp-content/uploads/*.pdf
 
 # Sitemap
-Sitemap: https://demarchelierbistro.com/sitemap.xml
+Sitemap: https://demarchelierrestaurant.com/sitemap.xml
 
 # Crawl-delay
 Crawl-delay: 1 

@@ -134,7 +134,7 @@ function demarchelier_restaurant_schema() {
     $contact_info = get_field('contact_info', 'option') ?: array();
     $address = $contact_info['address'] ?? '471 Main Street, Greenport, NY 11944';
     $phone = $contact_info['phone'] ?? '1.631.593.1650';
-    $email = $contact_info['email'] ?? 'info@demarchelierbistro.com';
+    $email = $contact_info['email'] ?? 'demarcheliergreenport@gmail.com';
     $resy_link = get_field('resy_link', 'option') ?: 'https://resy.com/cities/greenport-ny/venues/demarchelier-bistro';
     $menu_pdf = get_field('menu_pdf', 'option');
     $hours = get_field('hours', 'option') ?: array();

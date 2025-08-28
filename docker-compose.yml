@@ -55,7 +55,6 @@ services:
       - ./wp-content:/var/www/html/wp-content
     networks:
       - wordpress_network
-    user: xfs
 
 volumes:
   db_data:

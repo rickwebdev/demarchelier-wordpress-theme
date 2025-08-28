@@ -253,7 +253,7 @@ if (class_exists('ACF')) {
                                 'label' => 'Email',
                                 'name' => 'email',
                                 'type' => 'email',
-                                'default_value' => 'info@demarchelierbistro.com',
+                                'default_value' => 'demarcheliergreenport@gmail.com',
                             ),
                         ),
                     ),
@@ -492,7 +492,7 @@ function demarchelier_render_gallery_block($attributes) {
             <div class="gallery-content">
                 <div class="fade-in-left">
                     <h2 class="outlined-heading">Gallery</h2>
-                    <p>Explore artwork from our family collection and the late Eric Demarchelier.</p>
+                    <p>Explore the artwork of Eric Demarchelier.</p>
                     <a class="btn" href="https://www.ericdemarchelier.com/shop-art" target="_blank" rel="noopener">Visit gallery site</a>
                 </div>
                 <div class="gallery-images fade-in-right">
@@ -691,7 +691,7 @@ function demarchelier_setup_acf_fields() {
                         'label' => 'Email',
                         'name' => 'email',
                         'type' => 'email',
-                        'default_value' => 'info@demarchelierbistro.com',
+                        'default_value' => 'demarcheliergreenport@gmail.com',
                     ),
                 ),
             ),
@@ -1216,7 +1216,7 @@ function demarchelier_customize_register($wp_customize) {
     
     // Add setting for email
     $wp_customize->add_setting('email', array(
-        'default' => 'info@demarchelierbistro.com',
+        'default' => 'demarcheliergreenport@gmail.com',
         'sanitize_callback' => 'sanitize_email',
     ));
     
@@ -1289,14 +1289,14 @@ function demarchelier_schema_markup() {
         $contact_info = array();
         $address = '471 Main Street, Greenport, NY 11944';
         $phone = '1.631.593.1650';
-        $email = 'info@demarchelierbistro.com';
+        $email = 'demarcheliergreenport@gmail.com';
         $resy_link = 'https://resy.com/cities/greenport-ny/venues/demarchelier-bistro';
         $menu_pdf = null;
     } else {
         $contact_info = get_field('contact_info', 'option');
         $address = $contact_info['address'] ?? '471 Main Street, Greenport, NY 11944';
         $phone = $contact_info['phone'] ?? '1.631.593.1650';
-        $email = $contact_info['email'] ?? 'info@demarchelierbistro.com';
+        $email = $contact_info['email'] ?? 'demarcheliergreenport@gmail.com';
         $resy_link = get_field('resy_link', 'option') ?: 'https://resy.com/cities/greenport-ny/venues/demarchelier-bistro';
         $menu_pdf = get_field('menu_pdf', 'option');
     }
