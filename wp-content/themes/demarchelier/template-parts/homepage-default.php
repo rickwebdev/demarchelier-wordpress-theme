@@ -294,21 +294,64 @@ $contact_info = array(
                 <a class="btn" href="https://www.ericdemarchelier.com/shop-art" target="_blank" rel="noopener"><?php _e('Visit Gallery Site', 'demarchelier'); ?></a>
             </div>
             <div class="gallery-images fade-in-right">
-                <?php if ($gallery_images && is_array($gallery_images)): ?>
-                    <?php foreach ($gallery_images as $image): ?>
-                        <img src="<?php echo esc_url($image['url']); ?>"
-                             alt="<?php echo esc_attr($image['alt']); ?>">
-                    <?php endforeach; ?>
-                <?php else: ?>
+                <?php 
+                // Debug: Check what we have
+                // error_log('Gallery images: ' . print_r($gallery_images, true));
+                
+                if ($gallery_images && is_array($gallery_images)): 
+                    $image_count = 0;
+                    foreach ($gallery_images as $image): 
+                        $image_count++;
+                        // Handle both ACF array format and simple URL format
+                        $image_url = '';
+                        $image_alt = '';
+                        
+                        if (is_array($image)) {
+                            if (isset($image['url'])) {
+                                $image_url = $image['url'];
+                            } elseif (isset($image['sizes']['medium'])) {
+                                $image_url = $image['sizes']['medium'];
+                            } elseif (isset($image['sizes']['thumbnail'])) {
+                                $image_url = $image['sizes']['thumbnail'];
+                            }
+                            
+                            if (isset($image['alt'])) {
+                                $image_alt = $image['alt'];
+                            } elseif (isset($image['title'])) {
+                                $image_alt = $image['title'];
+                            }
+                        } else {
+                            $image_url = $image;
+                        }
+                        
+                        if ($image_url): ?>
+                            <img src="<?php echo esc_url($image_url); ?>"
+                                 alt="<?php echo esc_attr($image_alt); ?>"
+                                 loading="lazy">
+                        <?php endif;
+                    endforeach; 
+                    
+                    // If we have fewer than 4 images, fill with defaults
+                    while ($image_count < 4): 
+                        $image_count++; ?>
+                        <img src="https://images.unsplash.com/photo-1549880338-65ddcdfd017b?q=80&w=1200&auto=format&fit=crop"
+                             alt="<?php _e('Gallery image', 'demarchelier'); ?>"
+                             loading="lazy">
+                    <?php endwhile;
+                else: ?>
                     <!-- Default gallery images -->
                     <img src="https://images.unsplash.com/photo-1549880338-65ddcdfd017b?q=80&w=1200&auto=format&fit=crop"
-                         alt="<?php _e('Warmly lit bistro interior with framed art', 'demarchelier'); ?>">
+                         alt="<?php _e('Warmly lit bistro interior with framed art', 'demarchelier'); ?>"
+                         loading="lazy">
                     <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?q=80&w=1200&auto=format&fit=crop"
-                         alt="<?php _e('Elegant artwork on restaurant walls', 'demarchelier'); ?>">
-                    <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?q=80&w=1200&auto=format&fit=crop"
-                         alt="<?php _e('Family art collection display', 'demarchelier'); ?>">
-                    <img src="https://images.unsplash.com/photo-1549880338-65ddcdfd017b?q=80&w=1200&auto=format&fit=crop"
-                         alt="<?php _e('Art gallery atmosphere', 'demarchelier'); ?>">
+                         alt="<?php _e('Elegant artwork on restaurant walls', 'demarchelier'); ?>"
+                         loading="lazy">
+                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1200&auto=format&fit=crop"
+                         alt="<?php _e('Family art collection display', 'demarchelier'); ?>"
+                         loading="lazy">
+                    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=1200&auto=format&fit=crop"
+                         alt="<?php _e('Art gallery atmosphere', 'demarchelier'); ?>"
+                         loading="lazy">
                 <?php endif; ?>
             </div>
         </div>
