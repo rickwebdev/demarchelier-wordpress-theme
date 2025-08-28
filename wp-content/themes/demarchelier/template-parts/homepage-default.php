@@ -236,7 +236,18 @@ $contact_info = array(
                 }
                 ?>
             </address>
-            <p><a href="https://maps.google.com/?q=471 Main Street Greenport NY" target="_blank" rel="noopener"><?php _e('View on Google Maps', 'demarchelier'); ?></a></p>
+            <div class="location-map">
+                <iframe 
+                    src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=471+Main+Street+Greenport+NY+11944"
+                    width="100%" 
+                    height="180" 
+                    style="border:0; border-radius: 4px; margin-top: 12px;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade"
+                    title="<?php _e('Demarchelier Bistro Location', 'demarchelier'); ?>">
+                </iframe>
+            </div>
         </div>
         <div class="card fade-in-up">
             <h3><?php _e('Contact', 'demarchelier'); ?></h3>

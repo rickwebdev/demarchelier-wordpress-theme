@@ -134,7 +134,7 @@
 
     /* Announcement bar */
     .announce{background:var(--burgundy); border-top:1px solid var(--burgundy); border-bottom:1px solid var(--burgundy); overflow:hidden}
-    .announce p{margin:0; padding:.75rem 0; font-size:1.2rem; font-weight:500; color:#fff; white-space:nowrap; animation:marquee 18s linear infinite; letter-spacing:0.8px}
+    .announce p{margin:0; padding:.75rem 0; font-size:1.1rem; font-weight:500; color:#fff; white-space:nowrap; animation:marquee 35s linear infinite; letter-spacing:0.8px}
     @keyframes marquee{
       0%{transform:translateX(100%)}
       100%{transform:translateX(-100%)}
@@ -532,7 +532,18 @@
             471 Main Street<br>
             Greenport, NY 11944
           </address>
-          <p><a href="https://maps.google.com/?q=471 Main Street Greenport NY" rel="noopener">View on Google Maps</a></p>
+          <div class="location-map">
+            <iframe 
+              src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q=471+Main+Street+Greenport+NY+11944"
+              width="100%" 
+              height="180" 
+              style="border:0; border-radius: 4px; margin-top: 12px;" 
+              allowfullscreen="" 
+              loading="lazy" 
+              referrerpolicy="no-referrer-when-downgrade"
+              title="Demarchelier Bistro Location">
+            </iframe>
+          </div>
         </div>
         <div class="card fade-in-up">
           <h3>Contact</h3>

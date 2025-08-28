@@ -172,7 +172,7 @@ nav a:not(.btn):hover:after{width:100%}
 
 /* Announcement bar */
 .announce{background:var(--burgundy); border-top:1px solid var(--burgundy); border-bottom:1px solid var(--burgundy); overflow:hidden}
-.announce p{margin:0; padding:.75rem 0; font-size:1.2rem; font-weight:500; color:#fff; white-space:nowrap; animation:marquee 25s linear infinite; letter-spacing:0.8px; display:inline-block}
+.announce p{margin:0; padding:.75rem 0; font-size:1.1rem; font-weight:500; color:#fff; white-space:nowrap; animation:marquee 35s linear infinite; letter-spacing:0.8px; display:inline-block}
 .announcement-prefix{font-weight:700; color:var(--gold); margin-right:12px; text-transform:uppercase; font-size:1em; letter-spacing:1px}
 @keyframes marquee{
   0%{transform:translateX(100vw)}
@@ -344,7 +344,14 @@ section{padding:80px 0; scroll-margin-top:120px; transform: translateZ(0)}
   font-size: 1.1rem;
   line-height: 1.7;
 }
-.accent{font-family:var(--font-heading); font-weight:600; letter-spacing:.03em; font-size: 1.4rem}
+.accent{
+  font-family: var(--font-body);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--burgundy);
+}
 .divider{height:1px; background:linear-gradient(to right, var(--gold), transparent); margin:24px 0}
 
 /* Accent script utility. Use for a single short word only. */
@@ -357,6 +364,26 @@ section{padding:80px 0; scroll-margin-top:120px; transform: translateZ(0)}
 .info-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; padding:40px 0}
 .card{background:#fff; padding:20px; border:1px solid #e8e2d8; border-radius:8px}
 .card h3{margin-top:0}
+
+/* Location map styling */
+.location-map{
+  margin-top: 12px;
+}
+
+.location-map iframe{
+  width: 100%;
+  height: 180px;
+  border: 0;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: box-shadow 0.2s ease, outline 0.2s ease;
+}
+
+.location-map iframe:hover{
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
 
 .menu{
   background: linear-gradient(rgba(255,255,255,0.92), rgba(255,255,255,0.92)), 

@@ -73,6 +73,7 @@ function demarchelier_setup() {
     add_image_size('hero-medium', 1200, 800, true);
     add_image_size('gallery-thumb', 400, 300, true);
     add_image_size('about-image', 800, 600, true);
+    add_image_size('og-image', 1200, 630, true);
 }
 add_action('after_setup_theme', 'demarchelier_setup');
 
@@ -1300,30 +1301,29 @@ function demarchelier_schema_markup() {
         $menu_pdf = get_field('menu_pdf', 'option');
     }
     
-    ?>
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Restaurant",
-        "name": "Demarchelier Bistro",
-        "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "471 Main Street",
-            "addressLocality": "Greenport",
-            "addressRegion": "NY",
-            "postalCode": "11944"
-        },
-        "telephone": "<?php echo esc_js($phone); ?>",
-        "email": "<?php echo esc_js($email); ?>",
-        "servesCuisine": "French",
-        "url": "<?php echo esc_js(home_url()); ?>",
-        "acceptsReservations": "<?php echo esc_js($resy_link); ?>"
-        <?php if ($menu_pdf): ?>,
-        "menu": "<?php echo esc_js($menu_pdf['url']); ?>"
-        <?php endif; ?>
+    $schema = array(
+        '@context' => 'https://schema.org',
+        '@type' => 'Restaurant',
+        'name' => 'Demarchelier Bistro',
+        'address' => array(
+            '@type' => 'PostalAddress',
+            'streetAddress' => '471 Main Street',
+            'addressLocality' => 'Greenport',
+            'addressRegion' => 'NY',
+            'postalCode' => '11944'
+        ),
+        'telephone' => $phone,
+        'email' => $email,
+        'servesCuisine' => 'French',
+        'url' => home_url(),
+        'acceptsReservations' => $resy_link
+    );
+    
+    if ($menu_pdf && isset($menu_pdf['url'])) {
+        $schema['menu'] = $menu_pdf['url'];
     }
-    </script>
-    <?php
+    
+    echo '<script type="application/ld+json">' . wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) . '</script>';
 }
 add_action('wp_head', 'demarchelier_schema_markup');
 
@@ -1367,3 +1367,13 @@ function demarchelier_check_attempted_login($user, $username, $password) {
     return $user;
 }
 add_filter('authenticate', 'demarchelier_check_attempted_login', 30, 3); 
+
+/**
+ * Include SEO functions
+ */
+require get_template_directory() . '/inc/seo-functions.php';
+
+/**
+ * Include sitemap generator
+ */
+require get_template_directory() . '/inc/sitemap-generator.php';

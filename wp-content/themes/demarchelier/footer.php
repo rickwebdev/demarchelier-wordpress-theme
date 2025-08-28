@@ -1,7 +1,7 @@
 <footer class="site-footer">
     <div class="container foot-grid">
                 <div>
-            <strong><?php bloginfo('name'); ?></strong><br>
+            <strong>Demarchelier Bistro</strong><br>
             <?php 
             $address = get_theme_mod('address', '471 Main Street, Greenport NY 11944');
             echo nl2br(esc_html($address));
