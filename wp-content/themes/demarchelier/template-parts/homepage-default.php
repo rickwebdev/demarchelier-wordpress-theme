@@ -86,14 +86,28 @@ $contact_info = array(
     <?php if ($hero_images): ?>
         <?php foreach ($hero_images as $index => $image): ?>
             <div class="hero-bg <?php echo $index === 0 ? 'active' : ''; ?>" 
-                 style="background-image: url('<?php echo esc_url($image['url']); ?>')"></div>
+                 style="background-image: url('<?php echo esc_url($image['url']); ?>')"
+                 data-fetchpriority="<?php echo $index === 0 ? 'high' : 'auto'; ?>"
+                 data-loading="<?php echo $index === 0 ? 'eager' : 'lazy'; ?>"></div>
         <?php endforeach; ?>
     <?php else: ?>
         <!-- Default hero images -->
-        <div class="hero-bg active" style="background-image: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2000&auto=format&fit=crop')"></div>
-        <div class="hero-bg" style="background-image: url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=2000&auto=format&fit=crop')"></div>
-        <div class="hero-bg" style="background-image: url('https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=2000&auto=format&fit=crop')"></div>
-        <div class="hero-bg" style="background-image: url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=2000&auto=format&fit=crop')"></div>
+        <div class="hero-bg active" 
+             style="background-image: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2000&auto=format&fit=crop')"
+             data-fetchpriority="high"
+             data-loading="eager"></div>
+        <div class="hero-bg" 
+             style="background-image: url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=2000&auto=format&fit=crop')"
+             data-fetchpriority="auto"
+             data-loading="lazy"></div>
+        <div class="hero-bg" 
+             style="background-image: url('https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=2000&auto=format&fit=crop')"
+             data-fetchpriority="auto"
+             data-loading="lazy"></div>
+        <div class="hero-bg" 
+             style="background-image: url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=2000&auto=format&fit=crop')"
+             data-fetchpriority="auto"
+             data-loading="lazy"></div>
     <?php endif; ?>
     <div class="inner container">
         <div class="hero-brand">DEMARCHELIER</div>
@@ -243,7 +257,8 @@ $contact_info = array(
                     height="180" 
                     style="border:0; border-radius: 4px; margin-top: 12px;" 
                     allowfullscreen="" 
-                    loading="lazy" 
+                    loading="eager"
+                    importance="high"
                     referrerpolicy="no-referrer-when-downgrade"
                     title="<?php _e('Demarchelier Bistro Location', 'demarchelier'); ?>">
                 </iframe>
@@ -327,6 +342,8 @@ $contact_info = array(
                         if ($image_url): ?>
                             <img src="<?php echo esc_url($image_url); ?>"
                                  alt="<?php echo esc_attr($image_alt); ?>"
+                                 width="300"
+                                 height="225"
                                  loading="lazy">
                         <?php endif;
                     endforeach; 
@@ -336,21 +353,31 @@ $contact_info = array(
                         $image_count++; ?>
                         <img src="https://images.unsplash.com/photo-1549880338-65ddcdfd017b?q=80&w=1200&auto=format&fit=crop"
                              alt="<?php _e('Gallery image', 'demarchelier'); ?>"
+                             width="300"
+                             height="225"
                              loading="lazy">
                     <?php endwhile;
                 else: ?>
                     <!-- Default gallery images -->
                     <img src="https://images.unsplash.com/photo-1549880338-65ddcdfd017b?q=80&w=1200&auto=format&fit=crop"
                          alt="<?php _e('Warmly lit bistro interior with framed art', 'demarchelier'); ?>"
+                         width="300"
+                         height="225"
                          loading="lazy">
                     <img src="https://images.unsplash.com/photo-1578662996442-48f60103fc96?q=80&w=1200&auto=format&fit=crop"
                          alt="<?php _e('Elegant artwork on restaurant walls', 'demarchelier'); ?>"
+                         width="300"
+                         height="225"
                          loading="lazy">
                     <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=1200&auto=format&fit=crop"
                          alt="<?php _e('Family art collection display', 'demarchelier'); ?>"
+                         width="300"
+                         height="225"
                          loading="lazy">
                     <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=1200&auto=format&fit=crop"
                          alt="<?php _e('Art gallery atmosphere', 'demarchelier'); ?>"
+                         width="300"
+                         height="225"
                          loading="lazy">
                 <?php endif; ?>
             </div>

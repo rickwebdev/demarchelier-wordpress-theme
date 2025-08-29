@@ -84,14 +84,28 @@ function demarchelier_scripts() {
     // Enqueue main stylesheet
     wp_enqueue_style('demarchelier-style', get_stylesheet_uri(), array(), '1.0.0');
     
-    // Enqueue JavaScript
-    wp_enqueue_script('demarchelier-script', get_template_directory_uri() . '/js/theme.js', array('jquery'), '1.0.0', true);
+    // Enqueue optimized JavaScript with defer
+    wp_enqueue_script('demarchelier-script', get_template_directory_uri() . '/js/theme-optimized.js', array('jquery'), '1.0.0', true);
+    
+    // Add defer attribute to non-critical scripts
+    add_filter('script_loader_tag', 'demarchelier_add_defer_attribute', 10, 3);
     
     // Localize script for AJAX
     wp_localize_script('demarchelier-script', 'demarchelier_ajax', array(
         'ajax_url' => admin_url('admin-ajax.php'),
         'nonce' => wp_create_nonce('demarchelier_nonce'),
     ));
+}
+
+/**
+ * Add defer attribute to non-critical scripts
+ */
+function demarchelier_add_defer_attribute($tag, $handle, $src) {
+    // Add defer to our theme script
+    if ($handle === 'demarchelier-script') {
+        return str_replace('<script ', '<script defer ', $tag);
+    }
+    return $tag;
 }
 add_action('wp_enqueue_scripts', 'demarchelier_scripts');
 

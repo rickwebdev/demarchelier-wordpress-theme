@@ -8,7 +8,7 @@ Theme URI: https://subtenantstudios.com
 Text Domain: demarchelier
 */
 
-/* Import Google Fonts */
+/* Import Google Fonts with display=swap for better performance */
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Lora:wght@400;500&family=Parisienne&family=Playfair+Display:wght@600;700&display=swap');
 
 /* CSS Variables */
@@ -51,58 +51,105 @@ a:hover{text-decoration:underline}
 .skip-link:focus{left:16px; top:16px; width:auto; height:auto; background:#fff; padding:8px 12px; border:2px solid var(--gold); z-index:1000}
 :focus-visible{outline:3px solid var(--gold); outline-offset:2px}
 
-/* Preloader */
+/* Preloader - Wood and Burgundy Theme */
 .preloader{
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: var(--bg);
+  background: linear-gradient(135deg, #7A1F2A 0%, #8B0000 25%, #A0522D 50%, #7A1F2A 75%, #8B0000 100%);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 9999;
-  transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+  transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+  opacity: 1;
+  visibility: visible;
+  position: relative;
+}
+
+.preloader::before{
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 1px, transparent 1px),
+    radial-gradient(circle at 80% 20%, rgba(255,255,255,0.05) 1px, transparent 1px),
+    radial-gradient(circle at 40% 80%, rgba(255,255,255,0.08) 1px, transparent 1px);
+  background-size: 50px 50px, 30px 30px, 40px 40px;
+  pointer-events: none;
 }
 
 .preloader.hidden{
   opacity: 0;
   visibility: hidden;
+  pointer-events: none;
 }
 
 .preloader-content{
   text-align: center;
+  max-width: 400px;
+  padding: 2rem;
 }
 
 .preloader-logo{
-  font-family: var(--font-outlined);
+  font-family: "Times New Roman", Times, serif;
   font-size: 2.5rem;
-  font-weight: 600;
-  color: var(--burgundy);
+  font-weight: 700;
+  color: #ffffff;
   margin-bottom: 1rem;
   opacity: 0;
-  animation: fadeInUp 1s ease-out 0.3s forwards;
+  animation: fadeInUp 0.8s ease-out 0.1s forwards;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  letter-spacing: 0.015em;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.1;
 }
 
-.preloader-subtitle{
+.preloader-logo .bistro{
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  display: block;
+  margin-top: -2px;
+  color: #ffffff;
+}
+
+/* Removed subtitle - no longer needed */
+
+/* Progress text styling */
+.progress-text{
   font-family: var(--font-body);
-  font-size: 1rem;
-  color: var(--gray);
-  margin-bottom: 2rem;
+  font-size: 0.9rem;
+  color: #f1ede7;
+  margin: 1.5rem 0 1rem;
   opacity: 0;
-  animation: fadeInUp 1s ease-out 0.6s forwards;
+  animation: fadeInUp 0.8s ease-out 0.5s forwards;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  text-align: center;
 }
 
+/* Loading spinner - Clean and simple */
 .loading-spinner{
   width: 40px;
   height: 40px;
-  border: 2px solid #e8e2d8;
-  border-top: 2px solid var(--burgundy);
+  border: 2px solid rgba(255,255,255,0.2);
+  border-top: 2px solid #C9A227;
   border-radius: 50%;
   margin: 0 auto;
-  opacity: 0;
-  animation: spin 1s linear infinite, fadeIn 1s ease-out 0.9s forwards;
+  opacity: 1;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes shimmer{
+  0%{transform: translateX(-100%)}
+  100%{transform: translateX(100%)}
 }
 
 @keyframes fadeInUp{
@@ -135,16 +182,6 @@ a:hover{text-decoration:underline}
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-@keyframes fadeIn{
-  from{opacity: 0}
-  to{opacity: 1}
-}
-
-@keyframes spin{
-  0%{transform: rotate(0deg)}
-  100%{transform: rotate(360deg)}
 }
 
 /* Header */
@@ -185,12 +222,12 @@ nav a:not(.btn):hover:after{width:100%}
 }
 
 /* Hero */
-.hero{position:relative; height:100vh; display:flex; align-items:center; justify-content:center; text-align:center; color:#fff; overflow:hidden; perspective:1000px; padding-top:80px; transform: translateZ(0); contain: layout style paint}
+.hero{position:relative; height:100vh; display:flex; align-items:center; justify-content:center; text-align:center; color:#fff; overflow:hidden; perspective:1000px; padding-top:80px; transform: translateZ(0); contain: layout style paint; background: linear-gradient(135deg, #8B4513 0%, #A0522D 25%, #7A1F2A 50%, #8B4513 75%, #A0522D 100%)}
 .hero-bg{position:absolute; inset:-20%; background-size:cover; background-position:center; background-repeat:no-repeat; opacity:0; transition:opacity 2s ease-in-out; transform:translateZ(-100px) scale(1.2); will-change:transform; backface-visibility: hidden}
-.hero-bg.active{opacity:1}
-.hero-content{position:relative; z-index:3; transform:translateZ(50px); will-change:transform; backface-visibility: hidden}
+.hero-bg.active{opacity:0} /* Start invisible, will be controlled by JavaScript */
+.hero-content{position:relative; z-index:3; transform:translateZ(50px); will-change:transform; backface-visibility: hidden; transform-origin: center center}
 .hero:after{content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,.5), rgba(0,0,0,.4)); z-index:2}
-.hero .inner{position:relative; padding:3.5rem 1rem; z-index:3; transform:translateZ(50px) translateY(-5vh); max-width:800px; margin:0 auto; backface-visibility: hidden}
+.hero .inner{position:relative; padding:3.5rem 1rem; z-index:3; transform:translateZ(50px); max-width:800px; margin:0 auto; backface-visibility: hidden}
 h1,h2,h3,h4,h5,h6{font-family:var(--font-heading); font-weight:600; line-height:1.2; letter-spacing:0.2px; margin:.2em 0 .4em}
 h1{font-family:var(--font-outlined); font-weight:600; font-size:clamp(42px, 7vw, 72px); letter-spacing:1px; text-transform:uppercase}
 h2{font-size:clamp(32px, 4.5vw, 48px)}
@@ -490,6 +527,47 @@ section{padding:80px 0; scroll-margin-top:120px; transform: translateZ(0)}
   object-fit: cover;
   border-radius: 8px;
   border: 1px solid #e8e2d8;
+}
+
+/* Google Maps Optimization */
+.location-map {
+  position: relative;
+  min-height: 180px;
+  background: #f5f5f5;
+  border-radius: 4px;
+  margin-top: 12px;
+  overflow: hidden;
+}
+
+.location-map iframe {
+  width: 100%;
+  height: 180px;
+  border: 0;
+  border-radius: 4px;
+  transition: opacity 0.3s ease;
+}
+
+.location-map.loading iframe {
+  opacity: 0;
+}
+
+.location-map::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  border: 3px solid #e0e0e0;
+  border-top: 3px solid var(--burgundy);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  z-index: 1;
+}
+
+.location-map.loaded::before {
+  display: none;
 }
 
 /* Sign up section */
@@ -924,6 +1002,54 @@ section{padding:80px 0; scroll-margin-top:120px; transform: translateZ(0)}
   }
 }
 
+/* IntersectionObserver Animation Styles */
+.fade-in-up, .fade-in-left, .fade-in-right {
+  opacity: 0;
+  transform: translateY(60px);
+  transition: opacity 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: opacity, transform;
+}
+
+.fade-in-left {
+  transform: translateX(-60px);
+}
+
+.fade-in-right {
+  transform: translateX(60px);
+}
+
+/* Animation triggers */
+.fade-in-up.is-visible,
+.fade-in-left.is-visible,
+.fade-in-right.is-visible {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+/* Legacy support for older browsers */
+.fade-in-up.visible,
+.fade-in-left.visible,
+.fade-in-right.visible {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+/* Ensure animations are more visible on mobile */
+@media (max-width: 768px) {
+  .fade-in-up, .fade-in-left, .fade-in-right {
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  }
+  
+  .fade-in-left {
+    transform: translateX(-30px);
+  }
+  
+  .fade-in-right {
+    transform: translateX(30px);
+  }
+}
+
 /* Motion preferences */
 *{transition:color .2s ease, background-color .2s ease, border-color .2s ease}
 @media (prefers-reduced-motion: reduce){
@@ -938,7 +1064,21 @@ section{padding:80px 0; scroll-margin-top:120px; transform: translateZ(0)}
     text-shadow: 0 1px 3px rgba(0,0,0,0.3);
   }
   .hero-bg, .hero .inner{transform:none !important}
-  .fade-in-up, .fade-in-left, .fade-in-right{opacity:1; transform:none; will-change: auto}
+  .fade-in-up, .fade-in-left, .fade-in-right{
+    opacity:1; 
+    transform:none; 
+    will-change: auto;
+    transition: none;
+  }
+  .fade-in-up.is-visible,
+  .fade-in-left.is-visible,
+  .fade-in-right.is-visible,
+  .fade-in-up.visible,
+  .fade-in-left.visible,
+  .fade-in-right.visible {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 /* Touch device optimizations - disable hover effects on touch devices */
