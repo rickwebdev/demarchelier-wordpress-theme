@@ -192,17 +192,14 @@
                     
                     if (scrolled <= maxScroll) {
                         const rate = scrolled * -0.3; // Reduced movement rate
-                        const contentRate = scrolled * 0.2;
                         
                         // Move background images slower (creates parallax effect)
                         heroBgs.each(function() {
                             $(this).css('transform', `translateZ(-100px) scale(1.2) translateY(${rate}px)`);
                         });
                         
-                        // Move content slightly faster
-                        if (heroContent.length) {
-                            heroContent.css('transform', `translateZ(50px) translateY(${contentRate}px)`);
-                        }
+                        // Keep hero content stable - let CSS handle all positioning
+                        // No JavaScript transform manipulation to prevent jumping
                     }
                     ticking = false;
                 });
