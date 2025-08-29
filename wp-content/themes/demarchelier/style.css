@@ -24,6 +24,8 @@ Text Domain: demarchelier
   --font-body: "Lora", Georgia, "Times New Roman", serif;
   --font-accent: "Parisienne", "Brush Script MT", cursive;
   --font-outlined: "Cormorant Garamond", "Garamond", "Times New Roman", serif;
+  --logo-kerning-main: 0.015em;
+  --logo-kerning-bistro: 0.05em;
 }
 
 /* Reset and Base Styles */
@@ -34,12 +36,15 @@ body{margin:0; background:var(--bg); color:var(--ink);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden}
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+  position: relative}
 *,*:before,*:after{box-sizing:inherit}
 img{max-width:100%; height:auto; display:block}
 a{color:var(--burgundy); text-decoration:none}
 a:hover{text-decoration:underline}
-.container{max-width:var(--max); margin:0 auto; padding:0 24px}
+.container{max-width:var(--max); margin:0 auto; padding:0 24px; width: 100%; box-sizing: border-box}
 
 /* Accessibility */
 .skip-link{position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden}
@@ -145,11 +150,11 @@ a:hover{text-decoration:underline}
 /* Header */
 .site-header{position:sticky; top:0; z-index:999; background:#fff; border-bottom:1px solid #e8e2d8; transform: translateZ(0); will-change: transform}
 .nav-wrap{display:flex; align-items:center; justify-content:space-between; gap:16px; padding:12px 0}
-.logo{font-family:"Times New Roman", Times, serif; font-weight:700; font-size:28px; letter-spacing:1.5px; color:var(--burgundy); text-transform:uppercase; text-align:center; line-height:1.1; text-decoration:none; transition:all 0.4s cubic-bezier(0.4, 0, 0.2, 1); position:relative; overflow:hidden; display:inline-block}
+.logo{font-family:"Times New Roman", Times, serif; font-weight:700; font-size:28px; letter-spacing:var(--logo-kerning-main); color:var(--burgundy); text-transform:uppercase; text-align:center; line-height:1.1; text-decoration:none; transition:all 0.4s cubic-bezier(0.4, 0, 0.2, 1); position:relative; overflow:hidden; display:inline-block}
 .logo:hover{text-decoration:none; transform:scale(1.1) translateY(-3px); filter:brightness(1.2); text-shadow:0 6px 12px rgba(122,31,42,0.4); color:#8B0000}
 .logo:before{content:""; position:absolute; top:0; left:-100%; width:100%; height:100%; background:linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition:left 0.6s ease; z-index:1; pointer-events:none}
 .logo:hover:before{left:100%}
-.logo .bistro{font-size:20px; font-weight:600; letter-spacing:0.8px; display:block; margin-top:-2px}
+.logo .bistro{font-size:20px; font-weight:600; letter-spacing:var(--logo-kerning-bistro); display:block; margin-top:-2px}
 nav a{margin:0 10px; color:var(--ink); text-decoration:none; transition:all 0.3s ease; position:relative; padding:8px 0}
 nav a:not(.btn):hover{color:var(--burgundy); transform:translateY(-2px); text-shadow:0 2px 4px rgba(122,31,42,0.2); text-decoration:none}
 nav a:not(.btn):after{content:""; position:absolute; bottom:0; left:50%; width:0; height:2px; background:var(--burgundy); transition:all 0.3s ease; transform:translateX(-50%)}
@@ -185,7 +190,7 @@ nav a:not(.btn):hover:after{width:100%}
 .hero-bg.active{opacity:1}
 .hero-content{position:relative; z-index:3; transform:translateZ(50px); will-change:transform; backface-visibility: hidden}
 .hero:after{content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,.5), rgba(0,0,0,.4)); z-index:2}
-.hero .inner{position:relative; padding:4rem 1rem; z-index:3; transform:translateZ(50px); max-width:800px; margin:0 auto; backface-visibility: hidden}
+.hero .inner{position:relative; padding:3.5rem 1rem; z-index:3; transform:translateZ(50px) translateY(-5vh); max-width:800px; margin:0 auto; backface-visibility: hidden}
 h1,h2,h3,h4,h5,h6{font-family:var(--font-heading); font-weight:600; line-height:1.2; letter-spacing:0.2px; margin:.2em 0 .4em}
 h1{font-family:var(--font-outlined); font-weight:600; font-size:clamp(42px, 7vw, 72px); letter-spacing:1px; text-transform:uppercase}
 h2{font-size:clamp(32px, 4.5vw, 48px)}
@@ -203,7 +208,7 @@ h3{font-size:clamp(24px, 3vw, 32px)}
   text-transform: uppercase;
   margin: 0.3em 0 0.3em;
 }
-.sub{color:#f1ede7; margin:.5rem 0 2rem; font-size:clamp(18px, 2.5vw, 26px); font-weight:500; letter-spacing:0.3px; text-wrap:balance; overflow-wrap:normal; line-height:1.4}
+.sub{color:#f1ede7; margin:.4rem 0 1.7rem; font-size:clamp(18px, 2.5vw, 26px); font-weight:500; letter-spacing:0.3px; text-wrap:balance; overflow-wrap:normal; line-height:1.4}
 
 /* Hero shimmer effect */
 .hero h1, .hero .sub{
@@ -233,7 +238,7 @@ h3{font-size:clamp(24px, 3vw, 32px)}
   font-size: clamp(28px, 4vw, 48px);
   letter-spacing: 1.5px;
   margin-top: -0.5rem;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.6rem;
 }
 
 @keyframes shimmer{
@@ -716,11 +721,22 @@ section{padding:80px 0; scroll-margin-top:120px; transform: translateZ(0)}
   width: 100vw;
 }
 
+/* Mobile fixes for wide/full alignment */
+@media (max-width: 900px) {
+  .alignwide,
+  .alignfull {
+    margin-left: 0;
+    margin-right: 0;
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
 /* Mobile */
 @media (max-width: 900px){
   .nav-wrap{padding:20px 0}
-  .logo{font-size:24px; margin-left:16px}
-  .logo .bistro{font-size:18px}
+  .logo{font-size:24px; margin-left:16px; letter-spacing:var(--logo-kerning-main)}
+  .logo .bistro{font-size:18px; letter-spacing:var(--logo-kerning-bistro)}
   .menu-toggle{margin-right:16px}
   .about{grid-template-columns:1fr; padding: 0 1.5rem; margin-top: 2rem}
   .about-carousel{height:350px; padding: 1.5rem 1.5rem 0 1.5rem}
@@ -760,10 +776,10 @@ section{padding:80px 0; scroll-margin-top:120px; transform: translateZ(0)}
   .nav-open nav a:not(.btn):hover:after{display:none}
   .nav-open nav a:last-child{border-bottom:none}
   .nav-open nav .btn{display:inline-block; margin-top:8px; background:var(--resy); color:#fff; border-color:var(--resy); width:100%; text-align:center; padding:12px 16px}
-  .hero .btn{display:inline-block; margin-top:16px; min-width:200px; text-align:center}
+  .hero .btn{display:inline-block; margin-top:14px; min-width:200px; text-align:center}
   
   /* Mobile hero adjustments for better breathing room */
-  .hero .inner{padding:4rem 2rem}
+  .hero .inner{padding:3.5rem 2rem; transform: translateZ(50px) translateY(-3vh)}
   
   /* Mobile preloader adjustments */
   .preloader-logo{font-size:2rem}
@@ -783,6 +799,30 @@ section{padding:80px 0; scroll-margin-top:120px; transform: translateZ(0)}
   .btn:hover{
     transform: none !important;
     box-shadow: none !important;
+  }
+  
+  /* Fix announcement banner overflow on mobile */
+  .announce{
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .announce p{
+    white-space: nowrap;
+    animation: marquee-mobile 35s linear infinite;
+    text-align: left;
+    width: max-content;
+    display: inline-block;
+    padding-left: 100%;
+  }
+  
+  @keyframes marquee-mobile {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
   }
   
   .btn.book{
@@ -814,7 +854,7 @@ section{padding:80px 0; scroll-margin-top:120px; transform: translateZ(0)}
   
   /* Ensure buttons don't get cut off on mobile */
   .hero .btn{
-    margin: 16px auto;
+    margin: 14px auto;
     display: block;
     width: auto;
     max-width: 280px;
@@ -831,7 +871,7 @@ section{padding:80px 0; scroll-margin-top:120px; transform: translateZ(0)}
 
 /* Larger mobile screens (iPhone 14 Plus, etc.) */
 @media (min-width: 430px) and (max-width: 900px){
-  .hero .inner{padding:4rem 3.5rem}
+  .hero .inner{padding:3.5rem 3.5rem; transform: translateZ(50px) translateY(-4vh)}
   
   /* iPhone 14 Plus and similar large mobile screens */
   .hero h1{
@@ -853,7 +893,8 @@ section{padding:80px 0; scroll-margin-top:120px; transform: translateZ(0)}
 /* iPhone 14 Plus specific adjustments */
 @media (min-width: 430px) and (max-width: 500px){
   .hero .inner{
-    padding: 4rem 4rem;
+    padding: 3.5rem 4rem;
+    transform: translateZ(50px) translateY(-4vh);
   }
   
   .hero h1{
