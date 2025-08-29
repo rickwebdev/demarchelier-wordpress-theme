@@ -779,7 +779,7 @@ section{padding:80px 0; scroll-margin-top:120px; transform: translateZ(0)}
   .hero .btn{display:inline-block; margin-top:14px; min-width:200px; text-align:center}
   
   /* Mobile hero adjustments for better breathing room */
-  .hero .inner{padding:3.5rem 2rem; transform: translateZ(50px) translateY(-3vh)}
+  .hero .inner{padding:3.5rem 1rem; transform: translateZ(50px) translateY(-3vh)}
   
   /* Mobile preloader adjustments */
   .preloader-logo{font-size:2rem}
@@ -871,7 +871,7 @@ section{padding:80px 0; scroll-margin-top:120px; transform: translateZ(0)}
 
 /* Larger mobile screens (iPhone 14 Plus, etc.) */
 @media (min-width: 430px) and (max-width: 900px){
-  .hero .inner{padding:3.5rem 3.5rem; transform: translateZ(50px) translateY(-4vh)}
+  /* Removed conflicting hero inner adjustments */
   
   /* iPhone 14 Plus and similar large mobile screens */
   .hero h1{
@@ -892,10 +892,7 @@ section{padding:80px 0; scroll-margin-top:120px; transform: translateZ(0)}
 
 /* iPhone 14 Plus specific adjustments */
 @media (min-width: 430px) and (max-width: 500px){
-  .hero .inner{
-    padding: 3.5rem 4rem;
-    transform: translateZ(50px) translateY(-4vh);
-  }
+  /* Removed conflicting hero inner adjustments */
   
   .hero h1{
     font-size: 2.3rem;
