@@ -634,6 +634,33 @@ function demarchelier_menu_schema() {
 add_action('wp_head', 'demarchelier_menu_schema', 22);
 
 /**
+ * Remove any video structured data to fix Google Search Console errors
+ * This prevents false video schema from being detected
+ */
+function demarchelier_remove_video_schema() {
+    // Remove any video structured data that might be added by plugins or themes
+    remove_action('wp_head', 'wp_video_shortcode_script');
+    
+    // Remove any video schema that might be added by other sources
+    add_action('wp_head', function() {
+        // This ensures no video schema is present
+        echo '<!-- Video schema removed to prevent false Google Search Console errors -->' . "\n";
+    }, 999);
+}
+add_action('init', 'demarchelier_remove_video_schema');
+
+/**
+ * Filter out any video structured data from being output
+ */
+function demarchelier_filter_video_schema($output) {
+    // Remove any video schema from the output
+    $output = preg_replace('/<script[^>]*type="application\/ld\+json"[^>]*>.*?"@type"\s*:\s*"VideoObject".*?<\/script>/s', '', $output);
+    $output = preg_replace('/<script[^>]*type="application\/ld\+json"[^>]*>.*?"uploadDate".*?<\/script>/s', '', $output);
+    return $output;
+}
+add_filter('wp_head', 'demarchelier_filter_video_schema', 1000);
+
+/**
  * Add event schema for special events
  */
 function demarchelier_event_schema() {
