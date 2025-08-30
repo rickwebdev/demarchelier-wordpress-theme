@@ -852,7 +852,7 @@ section{padding:80px 0; scroll-margin-top:120px; transform: translateZ(0)}
   .hero .btn{display:inline-block; margin-top:14px; min-width:200px; text-align:center}
   
   /* Mobile hero adjustments for better breathing room */
-  .hero .inner{padding:3.5rem 1rem; transform: translateZ(50px) translateY(-3vh)}
+.hero .inner{padding:3.5rem 1rem; transform: translateZ(50px) translateY(-20px)}
   
   /* Mobile preloader adjustments */
   .preloader-logo{font-size:2rem}

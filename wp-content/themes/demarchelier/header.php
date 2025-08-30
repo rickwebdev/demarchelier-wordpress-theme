@@ -278,6 +278,9 @@
             .hero {
                 height: 100vh;
                 min-height: 600px;
+                /* Use fixed height to prevent jumpiness when mobile nav appears/disappears */
+                height: 100vh;
+                height: -webkit-fill-available;
             }
             .hero-bg {
                 transform: none !important;
