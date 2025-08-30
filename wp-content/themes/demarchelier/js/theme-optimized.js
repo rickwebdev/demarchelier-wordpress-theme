@@ -7,6 +7,10 @@
 (function($) {
     'use strict';
 
+    // Mobile detection
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
     // Custom easing function for smooth scrolling
     $.easing.easeOutCubic = function (x, t, b, c, d) {
         return c * ((t = t/d - 1) * t * t + 1) + b;
@@ -203,8 +207,13 @@
             heroBgs.eq(currentBg).addClass('active');
         }
         
-        // Optimized parallax effect using CSS transforms only
+        // Optimized parallax effect using CSS transforms only - Disabled on mobile for performance
         function updateParallax() {
+            // Disable parallax on mobile devices for better performance
+            if (isMobile || isTouchDevice) {
+                return;
+            }
+            
             if (!ticking) {
                 requestAnimationFrame(function() {
                     const scrolled = window.pageYOffset;
@@ -235,17 +244,19 @@
             heroHeight = $('.hero').outerHeight();
         }, 250));
         
-        // Throttled scroll handler for parallax
+        // Throttled scroll handler for parallax - Disabled on mobile for performance
         let parallaxTicking = false;
-        $(window).on('scroll', function() {
-            if (!parallaxTicking) {
-                requestAnimationFrame(function() {
-                    updateParallax();
-                    parallaxTicking = false;
-                });
-                parallaxTicking = true;
-            }
-        });
+        if (!isMobile && !isTouchDevice) {
+            $(window).on('scroll', function() {
+                if (!parallaxTicking) {
+                    requestAnimationFrame(function() {
+                        updateParallax();
+                        parallaxTicking = false;
+                    });
+                    parallaxTicking = true;
+                }
+            });
+        }
     }
 
     /**
@@ -387,7 +398,7 @@
     });
 
     /**
-     * Lazy Loading for Images with IntersectionObserver
+     * Lazy Loading for Images with IntersectionObserver - Excludes hero images
      */
     function initLazyLoading() {
         if ('IntersectionObserver' in window) {
@@ -407,7 +418,8 @@
                 threshold: 0.1
             });
 
-            document.querySelectorAll('img[data-src]').forEach(function(img) {
+            // Exclude hero images from lazy loading - they should load immediately
+            document.querySelectorAll('img[data-src]:not(.hero img):not(.hero-bg img)').forEach(function(img) {
                 imageObserver.observe(img);
             });
         }
@@ -455,34 +467,15 @@
             // Update progress text
             updateProgressText(heroImagesLoaded, totalHeroImages);
             
-            // Hide preloader when all hero images are loaded
-            if (heroImagesLoaded >= totalHeroImages && totalHeroImages > 0) {
-                console.log('All hero images loaded, waiting for first image to be visible...');
+            // Hide preloader when first hero image is loaded (critical above-the-fold)
+            if (heroImagesLoaded >= 1) {
+                console.log('First hero image loaded, hiding preloader immediately');
                 
                 // Update progress text
                 updateProgressText(heroImagesLoaded, totalHeroImages);
                 
-                // Wait for the first hero image to be fully visible before hiding preloader
-                const firstHeroBg = document.querySelector('.hero-bg.active');
-                if (firstHeroBg) {
-                    // Wait for the fade-in transition to complete
-                    setTimeout(function() {
-                        // Double-check that the image is actually visible
-                        const computedStyle = window.getComputedStyle(firstHeroBg);
-                        const opacity = parseFloat(computedStyle.opacity);
-                        
-                        if (opacity >= 0.9) {
-                            console.log('First hero image is fully visible, hiding preloader');
-                            hidePreloader();
-                        } else {
-                            console.log('Hero image not fully visible yet, waiting...');
-                            // Wait a bit more if not fully visible
-                            setTimeout(hidePreloader, 500);
-                        }
-                    }, 1000); // Wait 1 second for the fade-in transition to complete
-                } else {
-                    hidePreloader();
-                }
+                // Hide preloader immediately after first image loads
+                hidePreloader();
             }
         }
         

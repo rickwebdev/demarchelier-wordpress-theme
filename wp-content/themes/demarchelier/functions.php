@@ -98,13 +98,19 @@ function demarchelier_scripts() {
 }
 
 /**
- * Add defer attribute to non-critical scripts
+ * Add defer attribute to non-critical scripts for mobile performance
  */
 function demarchelier_add_defer_attribute($tag, $handle, $src) {
     // Add defer to our theme script
     if ($handle === 'demarchelier-script') {
         return str_replace('<script ', '<script defer ', $tag);
     }
+    
+    // Add defer to jQuery if not already present
+    if ($handle === 'jquery' && strpos($tag, 'defer') === false) {
+        return str_replace('<script ', '<script defer ', $tag);
+    }
+    
     return $tag;
 }
 add_action('wp_enqueue_scripts', 'demarchelier_scripts');

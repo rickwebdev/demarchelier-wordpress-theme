@@ -90,6 +90,10 @@
     <link rel="dns-prefetch" href="//maps.googleapis.com">
     <link rel="dns-prefetch" href="//images.unsplash.com">
     
+    <!-- Preload critical fonts for hero section -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Cormorant+Garamond:wght@600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Cormorant+Garamond:wght@600&display=swap"></noscript>
+    
     <!-- Preload critical hero images -->
     <?php
     // Get hero images for preloading
@@ -236,12 +240,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #7A1F2A 0%, #8B0000 25%, #A0522D 50%, #7A1F2A 75%, #8B0000 100%);
+            background: #2a1f1c;
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 9999;
-            transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+            transition: opacity 0.8s ease-out, visibility 0.8s ease-out;
         }
         .preloader.hidden {
             opacity: 0;
@@ -249,23 +253,14 @@
             pointer-events: none;
         }
         
-        /* Progress Text Styles */
-        .progress-text {
-            font-family: "Lora", Georgia, "Times New Roman", serif;
-            font-size: 0.9rem;
-            color: #f1ede7;
-            margin: 1.5rem 0 1rem;
-            font-weight: 500;
-            letter-spacing: 0.3px;
-            text-align: center;
-        }
+
         
         /* Loading Spinner */
         .loading-spinner {
             width: 40px;
             height: 40px;
-            border: 2px solid rgba(255,255,255,0.2);
-            border-top: 2px solid #C9A227;
+            border: 2px solid rgba(160,28,39,0.2);
+            border-top: 2px solid #a01c27;
             border-radius: 50%;
             margin: 0 auto;
             animation: spin 1s linear infinite;
@@ -276,28 +271,22 @@
             100% { transform: rotate(360deg); }
         }
         
-        /* Preloader Logo Styling */
-        .preloader-logo {
-            font-family: "Times New Roman", Times, serif;
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #ffffff;
-            margin-bottom: 1rem;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease-out 0.1s forwards;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-            letter-spacing: 0.015em;
-            text-transform: uppercase;
-            text-align: center;
-            line-height: 1.1;
-        }
-        .preloader-logo .bistro {
-            font-size: 1.8rem;
-            font-weight: 600;
-            letter-spacing: 0.05em;
-            display: block;
-            margin-top: -2px;
-            color: #ffffff;
+
+        
+        /* Mobile performance optimizations */
+        @media (max-width: 768px) {
+            .hero {
+                height: 100vh;
+                min-height: 600px;
+            }
+            .hero-bg {
+                transform: none !important;
+                transition: opacity 1s ease-in-out;
+            }
+            .hero .inner {
+                transform: none !important;
+                transition: none !important;
+            }
         }
         
         /* Header logo styling */
@@ -348,14 +337,9 @@
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 
-<!-- Non-blocking Preloader with Progress Bar -->
+<!-- Minimal Preloader -->
 <div class="preloader" id="preloader">
     <div class="preloader-content">
-        <div class="preloader-logo">
-            DEMARCHELIER
-            <span class="bistro">Bistro</span>
-        </div>
-        <div class="progress-text" id="progress-text">Loading...</div>
         <div class="loading-spinner"></div>
     </div>
 </div>

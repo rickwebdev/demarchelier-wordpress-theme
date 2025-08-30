@@ -58,30 +58,43 @@ a:hover{text-decoration:underline}
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #7A1F2A 0%, #8B0000 25%, #A0522D 50%, #7A1F2A 75%, #8B0000 100%);
+  background: #2a1f1c;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 9999;
-  transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+  transition: opacity 0.8s ease-out, visibility 0.8s ease-out;
   opacity: 1;
   visibility: visible;
   position: relative;
 }
 
-.preloader::before{
+.preloader::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: 
-    radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 1px, transparent 1px),
-    radial-gradient(circle at 80% 20%, rgba(255,255,255,0.05) 1px, transparent 1px),
-    radial-gradient(circle at 40% 80%, rgba(255,255,255,0.08) 1px, transparent 1px);
+  background: linear-gradient(180deg, rgba(42,31,28,0.8) 0%, rgba(42,31,28,0) 100%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.preloader::after{
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(255,255,255,0.05) 1px, transparent 1px),
+    radial-gradient(circle at 80% 20%, rgba(255,255,255,0.03) 1px, transparent 1px),
+    radial-gradient(circle at 40% 80%, rgba(255,255,255,0.04) 1px, transparent 1px);
   background-size: 50px 50px, 30px 30px, 40px 40px;
   pointer-events: none;
+  z-index: -1;
 }
 
 .preloader.hidden{
@@ -96,51 +109,18 @@ a:hover{text-decoration:underline}
   padding: 2rem;
 }
 
-.preloader-logo{
-  font-family: "Times New Roman", Times, serif;
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #ffffff;
-  margin-bottom: 1rem;
-  opacity: 0;
-  animation: fadeInUp 0.8s ease-out 0.1s forwards;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-  letter-spacing: 0.015em;
-  text-transform: uppercase;
-  text-align: center;
-  line-height: 1.1;
-}
 
-.preloader-logo .bistro{
-  font-size: 1.8rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  display: block;
-  margin-top: -2px;
-  color: #ffffff;
-}
 
 /* Removed subtitle - no longer needed */
 
-/* Progress text styling */
-.progress-text{
-  font-family: var(--font-body);
-  font-size: 0.9rem;
-  color: #f1ede7;
-  margin: 1.5rem 0 1rem;
-  opacity: 0;
-  animation: fadeInUp 0.8s ease-out 0.5s forwards;
-  font-weight: 500;
-  letter-spacing: 0.3px;
-  text-align: center;
-}
+
 
 /* Loading spinner - Clean and simple */
 .loading-spinner{
   width: 40px;
   height: 40px;
   border: 2px solid rgba(255,255,255,0.2);
-  border-top: 2px solid #C9A227;
+  border-top: 2px solid #ffffff;
   border-radius: 50%;
   margin: 0 auto;
   opacity: 1;
@@ -1049,19 +1029,26 @@ section{padding:80px 0; scroll-margin-top:120px; transform: translateZ(0)}
   transform: translate(0, 0);
 }
 
-/* Ensure animations are more visible on mobile */
+/* Mobile animations - slide up with emphasis */
 @media (max-width: 768px) {
   .fade-in-up, .fade-in-left, .fade-in-right {
-    transform: translateY(30px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    transform: translateY(60px);
+    transition: opacity 0.4s ease-out, transform 0.4s ease-out;
   }
   
   .fade-in-left {
-    transform: translateX(-30px);
+    transform: translateY(60px);
   }
   
   .fade-in-right {
-    transform: translateX(30px);
+    transform: translateY(60px);
+  }
+  
+  .fade-in-up.is-visible,
+  .fade-in-left.is-visible,
+  .fade-in-right.is-visible {
+    opacity: 1;
+    transform: translateY(0);
   }
   
   /* Gallery mobile layout */
